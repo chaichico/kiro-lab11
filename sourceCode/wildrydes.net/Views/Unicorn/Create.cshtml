@@ -1,0 +1,83 @@
+﻿@model wildrydes.net.Models.UnicornModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<style>
+    input {
+        max-width: 700px;
+    }
+
+    textarea {
+        max-width: 700px;
+    }
+
+    label {
+        color: #ffffff;
+        font-weight: bold;
+        font-style: italic;
+        padding-bottom: 10px;
+        font-size: 18px;
+    }
+
+    #Name {
+        width: 600px;
+        height: 50px;
+        background-color: #ffffff;
+        border-bottom: 3px solid #000000;
+        text-align: center;
+    }
+
+    #Description {
+        width: 600px;
+        height: 100px;
+        background-color: #ffffff;
+        border-bottom: 3px solid #000000;
+        text-align: center;
+    }
+
+    #list {
+        color: #ffffff;
+        font-weight: bold;
+        font-style: italic;
+        padding-top: 10px;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="margin: auto; text-align: center;">
+    <h3 style="padding-top: 75px; color: #ffffff; font-weight: bold; font-style: italic;">Register Unicorn</h3>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group" style="padding-top: 75px; margin: auto; text-align: center;">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10" style="margin: auto; text-align: center;">
+            @Html.TextBoxFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            <br />
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" style="padding-top: 75px; margin: auto; text-align: center;">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10" style="margin: auto; text-align: center;">
+            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            <br />
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" style="padding-top: 20px; padding-bottom: 100px; margin: auto; text-align: center;">
+        <div class="col-md-offset-2 col-md-10" style="margin: auto; text-align: center;">
+            <input type="submit" value="Create" class="btn btn-primary btn-md" />
+        </div>
+        <div id="list">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+}
+

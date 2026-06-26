@@ -1,0 +1,60 @@
+﻿@model wildrydes.net.Models.UserModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<style>
+    input {
+        max-width: 700px;
+    }
+    #Email {
+        width: 600px;
+        height: 50px;
+        background-color: #ffffff;
+        border-bottom: 3px solid #000000;
+        text-align: center;
+    }
+    #Password {
+        width: 600px;
+        height: 50px;
+        background-color: #ffffff;
+        border-bottom: 3px solid #000000;
+        text-align: center;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="margin: auto; text-align: center;">
+        <h3 style="padding-top: 75px; color: #ffffff; font-weight: bold; font-style: italic;">Register</h3>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group" style="padding-top: 75px; margin: auto; text-align: center;">
+            <div class="col-md-10" style="margin: auto; text-align: center;">
+                @Html.TextBoxFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-top: 50px; margin: auto; text-align: center;">
+            <div class="col-md-10" style="margin: auto; text-align: center;">
+                @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-top: 20px; padding-bottom: 100px; margin: auto; text-align: center;">
+            <div class="col-md-offset-2 col-md-10" style="margin: auto; text-align: center;">
+                <input type="submit" value="Register" class="btn btn-primary btn-md" />&nbsp;&nbsp;&nbsp;<a href="/User/Login" class="btn btn-primary btn-md">Login</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

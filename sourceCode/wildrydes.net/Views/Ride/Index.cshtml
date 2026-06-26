@@ -1,0 +1,56 @@
+﻿@model IEnumerable<wildrydes.net.Models.RideModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row" style="margin: auto; text-align: center;">
+    <h3 style="padding-top: 75px; color: #ffffff; font-weight: bold; font-style: italic;">Request History</h3>
+    <table class="table" style="padding-top: 75px;">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Unicorn.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupLocation.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationLocation.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Unicorn.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupLocation.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationLocation.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfPassengers)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
