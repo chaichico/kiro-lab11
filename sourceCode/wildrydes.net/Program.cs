@@ -1,6 +1,6 @@
 using Amazon.CognitoIdentity;
 using Amazon.LocationService;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using wildrydes.net.Context;
 using wildrydes.net.Models;
@@ -13,13 +13,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DefaultContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Cookie authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+// ASP.NET Core Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
     {
-        options.LoginPath = "/User/Login";
-        options.LogoutPath = "/User/Logout";
-    });
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 6;
+    })
+    .AddEntityFrameworkStores<DefaultContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";
+    options.LogoutPath = "/User/Logout";
+});
 
 // AWS SDK services
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());

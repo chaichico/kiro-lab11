@@ -1,10 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace wildrydes.net.Models;
 
-[Table("Users")]
 public class UserModel
 {
     public Guid Id { get; set; }

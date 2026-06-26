@@ -1,18 +1,21 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using wildrydes.net.Models;
 
 namespace wildrydes.net.Context;
 
-public class DefaultContext : DbContext
+public class DefaultContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
-    public DbSet<UserModel> Users { get; set; }
     public DbSet<UnicornModel> Unicorns { get; set; }
     public DbSet<RideModel> Rides { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<RideModel>(entity =>
         {
             entity.OwnsOne(r => r.PickupLocation);
@@ -47,12 +50,19 @@ public class DefaultContext : DbContext
             }
         );
 
-        modelBuilder.Entity<UserModel>().HasData(
-            new UserModel
+        var userId = Guid.Parse("4aff9469-588f-4a80-9183-eca28c8d0f7d");
+        var hasher = new PasswordHasher<ApplicationUser>();
+        modelBuilder.Entity<ApplicationUser>().HasData(
+            new ApplicationUser
             {
-                Id = Guid.Parse("4aff9469-588f-4a80-9183-eca28c8d0f7d"),
+                Id = userId,
                 Email = "user@unicornrides.aws",
-                Password = "b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342" // SHA256 of "Passw0rd"
+                NormalizedEmail = "USER@UNICORNRIDES.AWS",
+                UserName = "user@unicornrides.aws",
+                NormalizedUserName = "USER@UNICORNRIDES.AWS",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null!, "Passw0rd"),
+                SecurityStamp = Guid.NewGuid().ToString()
             }
         );
     }

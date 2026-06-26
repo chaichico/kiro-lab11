@@ -1,31 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using wildrydes.net.Context;
 using wildrydes.net.Models;
 
 namespace wildrydes.net.Controllers;
 
 public class UserController : Controller
 {
-    private readonly DefaultContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public UserController(DefaultContext db)
+    public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
-        _db = db;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
 
@@ -40,22 +32,12 @@ public class UserController : Controller
     {
         if (!string.IsNullOrEmpty(userModel.Email) && !string.IsNullOrEmpty(userModel.Password))
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userModel.Email);
+            var user = await _userManager.FindByEmailAsync(userModel.Email);
             if (user != null)
             {
-                if (GetHash(userModel.Password) == user.Password)
+                var result = await _signInManager.PasswordSignInAsync(user, userModel.Password, isPersistent: false, lockoutOnFailure: false);
+                if (result.Succeeded)
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Role, "user")
-                    };
-
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
                     var returnUrl = Request.Query["or"].FirstOrDefault();
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
@@ -82,24 +64,26 @@ public class UserController : Controller
     {
         if (ModelState.IsValid)
         {
-            userModel.Id = Guid.NewGuid();
-            userModel.Password = GetHash(userModel.Password);
-            _db.Users.Add(userModel);
-            await _db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            var user = new ApplicationUser
+            {
+                Id = Guid.NewGuid(),
+                UserName = userModel.Email,
+                Email = userModel.Email
+            };
+
+            var result = await _userManager.CreateAsync(user, userModel.Password);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
 
         return View(userModel);
-    }
-
-    public static string GetHash(string input)
-    {
-        byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
-        var builder = new StringBuilder();
-        for (int i = 0; i < bytes.Length; i++)
-        {
-            builder.Append(bytes[i].ToString("x2"));
-        }
-        return builder.ToString();
     }
 }

@@ -15,7 +15,7 @@ public class RideModel
 
     [ForeignKey("User")]
     public Guid UserId { get; set; }
-    public virtual UserModel User { get; set; } = null!;
+    public virtual ApplicationUser User { get; set; } = null!;
 
     public DateTime DateTime { get; set; }
 
