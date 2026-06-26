@@ -1,0 +1,721 @@
+<!--
+  AWS Transform Assessment Report — index.html Template
+  
+  STRUCTURAL REFERENCE for the agent when generating index.html.
+  Read this to understand the expected layout, component patterns, and tab structure.
+  Replace all {{PLACEHOLDER}} values with real data from the input files.
+  
+  CSS: Read templates/atx-analysis-report/assessment-report.css and inline it in <style>.
+  
+  GENERATION APPROACH — AREA BY AREA:
+  1. Write skeleton (everything up to and including <div class="nav-tabs">...</div>)
+  2. Append each tab content <div> one at a time
+  3. Append Recommendations tab, then Migration Roadmap tab (always last)
+  4. Append closing (</div>, footer, <script>, </body></html>)
+  
+  Tab areas are DYNAMIC — discovered from detail-pages-manifest.json.
+  The tabs below are examples. Adapt to whatever areas exist in the manifest.
+
+  CRITICAL BANNER: Only render if critical/high-severity issues > 0. Omit entirely otherwise.
+  NO DARK MODE: Light theme only. No theme toggle button.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PROJECT_TITLE}} — Assessment Report</title>
+<style>
+/* Inline full contents of templates/atx-analysis-report/assessment-report.css here */
+</style>
+</head>
+<body>
+
+<!-- SKIP LINK (Accessibility — first element in body) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- HEADER -->
+<div class="header">
+<div class="header-content">
+<div class="header-logo">
+<img src="aws-logo.png" alt="AWS" class="aws-logo">
+<div>
+<h1>{{PROJECT_TITLE}}</h1>
+<p class="subtitle">{{ONE_LINE_DESCRIPTION}} — {{KEY_STATS}} • Generated {{DATE}}</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CRITICAL BANNER (CONDITIONAL — only render if critical/high issues > 0, omit entirely otherwise) -->
+<div class="critical-banner">
+<strong>⚠️ {{N}} Critical Issues Identified</strong>
+{{ISSUE_1}} • {{ISSUE_2}} • {{ISSUE_3}}
+</div>
+
+<div class="container" id="main-content">
+
+<!-- TAB NAVIGATION — FIXED ORDER follows presentation narrative:
+     Understand (Overview → Architecture → Behavior) →
+     Assess (Analysis → Technical Debt → Diagrams) →
+     Reference (Reference → Specialized) →
+     Act (Migration → Recommendations → Roadmap).
+     Unknown/extra areas go between Specialized and Migration. -->
+<div class="nav-tabs">
+<button class="nav-tab active" data-tab-id="tab-overview">📋 Overview</button>
+<button class="nav-tab" data-tab-id="tab-architecture">🏗️ Architecture</button>
+<button class="nav-tab" data-tab-id="tab-behavior">⚙️ Behavior</button>
+<button class="nav-tab" data-tab-id="tab-analysis">📊 Analysis</button>
+<button class="nav-tab" data-tab-id="tab-technical-debt">⚠️ Technical Debt</button>
+<button class="nav-tab" data-tab-id="tab-diagrams">📈 Diagrams</button>
+<button class="nav-tab" data-tab-id="tab-reference">📚 Reference</button>
+<button class="nav-tab" data-tab-id="tab-specialized">🔧 Specialized</button>
+<!-- unknown/extra area tabs go here -->
+<button class="nav-tab" data-tab-id="tab-migration">🚀 Migration</button>
+<button class="nav-tab" data-tab-id="tab-recommendations">💡 Recommendations & Roadmap</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Overview (FIRST — always active)                         -->
+<!-- Required: readiness score, 6+ metric cards, key risks,        -->
+<!--           technology stack table, business domain table        -->
+<!-- ============================================================ -->
+<div class="tab-content active" id="tab-overview">
+<div class="card">
+<h2>📋 Executive Dashboard</h2>
+
+<!-- Executive Summary — REQUIRED (plain language for non-technical readers) -->
+<!-- 3-4 sentences: What does this system do? Who uses it? Why does it matter? -->
+<div class="alert alert-info" style="font-size:1.05rem;line-height:1.7">
+<strong>What is this system?</strong> {{PLAIN_LANGUAGE_SUMMARY}}
+</div>
+
+<p>{{PROJECT_DESCRIPTION}}</p>
+
+<!-- Migration Readiness Score — REQUIRED -->
+<!-- Use class "low" (1-4), "medium" (5-7), or "high" (8-10) -->
+<!-- conic-gradient percentage = score × 10 (e.g., 4/10 = 40%) -->
+<div class="readiness-score low">
+<div class="score-circle" style="background:conic-gradient(var(--danger) 0% 40%,#e0e0e0 40% 100%)">
+  <div class="score-inner" style="color:var(--danger)">{{SCORE}}/10</div>
+</div>
+<div class="score-details">
+  <h4 style="color:var(--danger)">Migration Readiness Score: {{SCORE}} / 10</h4>
+  <p><strong>Justification:</strong> {{SCORE_JUSTIFICATION}}</p>
+</div>
+</div>
+
+<!-- 6+ Metric Cards -->
+<div class="stats-grid">
+<div class="stat-card critical"><div class="stat-label">{{LABEL}}</div><div class="stat-value">{{VALUE}}</div><div class="stat-description">{{DESC}}</div></div>
+<div class="stat-card warning"><div class="stat-label">{{LABEL}}</div><div class="stat-value">{{VALUE}}</div><div class="stat-description">{{DESC}}</div></div>
+<div class="stat-card"><div class="stat-label">{{LABEL}}</div><div class="stat-value">{{VALUE}}</div><div class="stat-description">{{DESC}}</div></div>
+<!-- ... at least 6 cards ... -->
+</div>
+
+<!-- Key Risks — REQUIRED -->
+<h3>🚨 Key Risks</h3>
+<div class="alert alert-danger"><strong>Risk 1 — {{TITLE}}:</strong> {{DESCRIPTION}}</div>
+<div class="alert alert-danger"><strong>Risk 2 — {{TITLE}}:</strong> {{DESCRIPTION}}</div>
+<div class="alert alert-danger"><strong>Risk 3 — {{TITLE}}:</strong> {{DESCRIPTION}}</div>
+
+<!-- Technology Stack Table — REQUIRED -->
+<h3>Platform &amp; Technology Stack</h3>
+<table>
+<tr><th>Component</th><th>Technology</th><th>Status</th></tr>
+<tr><td>{{COMPONENT}}</td><td>{{TECH}}</td><td><span class="badge badge-critical">{{STATUS}}</span></td></tr>
+<!-- ... rows ... -->
+</table>
+
+<!-- Business Domain Table — REQUIRED -->
+<h3>Business Domain</h3>
+<table>
+<tr><th>Area</th><th>Components</th><th>Description</th></tr>
+<tr><td>{{AREA}}</td><td>{{COMPONENTS}}</td><td>{{DESC}}</td></tr>
+<!-- ... rows ... -->
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-overview.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Architecture                                             -->
+<!-- Required: 4+ metric cards, system diagram, design patterns    -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-architecture">
+<div class="card">
+<h2>🏗️ Architecture Summary</h2>
+<p>{{ARCHITECTURE_SUMMARY}}</p>
+
+<div class="stats-grid">
+<!-- 4+ cards: processing stages, transformers, connectors, data sources -->
+</div>
+
+<!-- Layered Architecture Diagram -->
+<div class="diagram-container">
+<div class="diagram-title">{{DIAGRAM_TITLE}}</div>
+<div class="diagram-layers">
+<div class="diagram-layer layer-presentation"><div class="layer-label">{{TIER_1_LABEL}}</div><div class="layer-components"><span class="component">{{COMPONENT}}</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-business"><div class="layer-label">{{TIER_2_LABEL}}</div><div class="layer-components"><span class="component">{{COMPONENT}}</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-data"><div class="layer-label">{{TIER_3_LABEL}}</div><div class="layer-components"><span class="component">{{COMPONENT}}</span></div></div>
+</div>
+</div>
+
+<!-- Design Patterns Table -->
+<h3>Design Patterns Identified</h3>
+<table>
+<tr><th>Pattern</th><th>Usage</th><th>Assessment</th></tr>
+<tr><td>{{PATTERN}}</td><td>{{USAGE}}</td><td><span class="badge badge-info">{{ASSESSMENT}}</span></td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-architecture.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Behavior                                                 -->
+<!-- Required: 4+ metric cards, workflow flow diagram,             -->
+<!--           phase table, error handling summary                 -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-behavior">
+<div class="card">
+<h2>⚙️ Business Logic &amp; Workflows</h2>
+
+<div class="stats-grid">
+<!-- 4+ cards: business functions, workflows, critical path, error handlers -->
+</div>
+
+<!-- Flow Diagram for key business logic -->
+<h3>{{DOMAIN_SPECIFIC}} Classification</h3>
+<div class="flow-diagram">
+<div class="flow-node client">{{STEP_1}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">{{STEP_2}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">{{STEP_3}}</div>
+</div>
+
+<!-- Workflow Phase Table -->
+<h3>{{WORKFLOW_NAME}} ({{N}} Phases)</h3>
+<table>
+<tr><th>Phase</th><th>Components</th><th>Description</th></tr>
+<!-- ... rows ... -->
+</table>
+
+<h3>Error Handling Pattern</h3>
+<div class="alert alert-info">{{ERROR_HANDLING_SUMMARY}}</div>
+
+<p style="margin-top:1.5rem"><a href="details-behavior.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Analysis                                                 -->
+<!-- Required: 4+ metric cards, complexity table, security alerts, -->
+<!--           external dependencies grouped by category            -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-analysis">
+<div class="card">
+<h2>📊 Code Analysis</h2>
+
+<div class="stats-grid">
+<!-- 4+ cards: total LOC, largest file/job, conditional rules, schema columns -->
+</div>
+
+<h3>Complexity Distribution</h3>
+<table>
+<tr><th>Tier</th><th>Range</th><th>Count</th><th>%</th><th>Risk</th></tr>
+<tr><td>🔴 Critical</td><td>{{RANGE}}</td><td>{{COUNT}}</td><td>{{PCT}}</td><td><span class="badge badge-critical">Extreme</span></td></tr>
+<!-- ... tiers ... -->
+</table>
+
+<h3>Security Assessment</h3>
+<div class="alert alert-danger">🔴 {{CRITICAL_FINDING}}</div>
+<div class="alert alert-warning">🟠 {{HIGH_FINDING}}</div>
+
+<h3>External Dependencies — By Category</h3>
+<div class="alert alert-warning"><strong>⚠️ {{N}} dependency categories</strong> — totaling {{TOTAL}}+ external components.</div>
+<table>
+<tr><th>Category</th><th>Count</th><th>Key Components</th><th>Risk</th></tr>
+<!-- Discover categories from input data (e.g. databases, libraries, APIs, network, runtime, custom binaries).
+     One row per category with count + key components + risk badge.
+     Do NOT hardcode categories — derive them from the project's actual dependency landscape.
+     Omit rows with zero items. -->
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-analysis.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Technical Debt                                           -->
+<!-- Required: 4+ metric cards, severity inventory table,          -->
+<!--           top duplicated items table                          -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-technical-debt">
+<div class="card">
+<h2>⚠️ Technical Debt Assessment</h2>
+
+<div class="stats-grid">
+<!-- 4+ cards: critical/high/medium/low issue counts -->
+</div>
+
+<h3>Technical Debt Inventory</h3>
+<table>
+<tr><th>Severity</th><th>Category</th><th>Impact</th><th>Quantified</th></tr>
+<!-- ... rows with badge-critical/high/medium/low ... -->
+</table>
+
+<h3>Top Duplicated Items</h3>
+<table>
+<tr><th>Item</th><th>Copies</th><th>Wasted Lines/Size</th></tr>
+<!-- ... rows ... -->
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-technical-debt.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Diagrams                                                 -->
+<!-- Required: 4+ metric cards, data flow diagram, job hierarchy,  -->
+<!--           dependency tree (collapsible), entity relationships -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-diagrams">
+<div class="card">
+<h2>📈 System Diagrams</h2>
+
+<div class="stats-grid">
+<!-- 4+ cards: job families, dependency depth, data entities, circular deps -->
+</div>
+
+<!-- End-to-End Data Flow -->
+<h3>End-to-End Data Flow</h3>
+<div class="flow-diagram">
+<!-- flow-node chain: source → extraction → processing → output -->
+</div>
+
+<!-- Job Family Hierarchy Table -->
+<h3>Structural Diagram — Component Hierarchy</h3>
+<table>
+<tr><th>Family</th><th>Active</th><th>Total</th><th>Avg Size</th><th>Role</th></tr>
+<!-- ... rows with badge roles ... -->
+</table>
+
+<!-- Dependency Tree (collapsible) -->
+<h3>Behavioral Diagram — {{MAIN_WORKFLOW}} Dependency Tree</h3>
+<div class="collapsible">
+<div class="collapsible-header">{{TOP_LEVEL_RUNNER}}</div>
+<div class="collapsible-content">
+<div class="tree-diagram">{{TREE_CONTENT_WITH_BOX_DRAWING_CHARS}}</div>
+</div>
+</div>
+
+<!-- Entity Relationship Diagram (mermaid) -->
+<h3>Entity Relationship Diagram</h3>
+<pre class="mermaid">
+erDiagram
+    CUSTOMERS ||--o{ ORDERS : "has"
+    PRODUCTS ||--o{ ORDERS : "contains"
+    CUSTOMERS {
+        string Id PK
+        string Name
+        string Email
+    }
+    ORDERS {
+        string Id PK
+        string CustomerId FK
+        string ProductId FK
+        string OrderDate
+        string Status
+    }
+    PRODUCTS {
+        string Id PK
+        string Name
+        string Category
+        float Price
+    }
+</pre>
+
+<!-- Sequence Diagram (mermaid) — for complex request flows -->
+<h3>Key Request Flow</h3>
+<pre class="mermaid">
+sequenceDiagram
+    actor User
+    participant Browser
+    participant Controller
+    participant DB
+    participant AWS
+    User->>Browser: Action
+    Browser->>Controller: HTTP Request
+    Controller->>DB: Query
+    DB-->>Controller: Result
+    Controller-->>Browser: Response
+</pre>
+
+<p style="margin-top:1.5rem"><a href="details-diagrams.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Reference                                                -->
+<!-- Required: 6+ metric cards, parameter inventory tables,        -->
+<!--           DataSet interfaces, data type distribution,         -->
+<!--           core entities table                                 -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-reference">
+<div class="card">
+<h2>📚 Reference &amp; Data Models</h2>
+
+<div class="stats-grid">
+<!-- 6+ cards: schemas, columns, source tables, parameters, interfaces, credentials -->
+</div>
+
+<!-- Parameter Set Inventory (grouped by category) -->
+<h3>{{PARAM_SET_NAME}} Parameter Inventory</h3>
+<div class="alert alert-warning">{{PARAM_SET_DESCRIPTION_AND_RISK}}</div>
+
+<h4>{{CATEGORY_1}} Parameters ({{N}} members)</h4>
+<table>
+<tr><th>Parameter</th><th>Purpose</th><th>Usage Count</th><th>Risk</th></tr>
+<!-- ... rows with badge-critical for credentials ... -->
+</table>
+<!-- ... repeat for each category ... -->
+
+<!-- DataSet / Interface Table -->
+<h3>Inter-Component Interfaces</h3>
+<table>
+<tr><th>Interface Name</th><th>Schema</th><th>Written By</th><th>Read By</th></tr>
+<!-- ... rows ... -->
+</table>
+
+<!-- Data Type Distribution -->
+<h3>Data Type Distribution</h3>
+<table>
+<tr><th>Data Type</th><th>Usage Count</th><th>% of Total</th><th>Description</th></tr>
+<!-- ... rows ... -->
+</table>
+
+<!-- Core Entities -->
+<h3>Core Entities</h3>
+<table>
+<tr><th>Entity</th><th>Key</th><th>Key Columns</th></tr>
+<!-- ... rows ... -->
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-reference.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Specialized (adapt to whatever area exists)              -->
+<!-- Required: 5+ metric cards, schema inventory by category,      -->
+<!--           pattern examples (collapsible)                      -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-specialized">
+<div class="card">
+<h2>🔧 Specialized — {{AREA_SPECIFIC_TITLE}}</h2>
+
+<div class="stats-grid">
+<!-- 5+ cards: one per schema/category discovered -->
+</div>
+
+<!-- Schema/Category Inventory Tables -->
+<h4>{{CATEGORY_1}} ({{N}} items)</h4>
+<div class="alert alert-info">{{CATEGORY_DESCRIPTION}}</div>
+<table>
+<tr><th>Category</th><th>Items</th><th>Count</th><th>Key Items</th></tr>
+<!-- ... rows ... -->
+</table>
+<!-- ... repeat for each category ... -->
+
+<!-- Collapsible Pattern Examples -->
+<h3>{{PATTERN_TYPE}} Patterns</h3>
+<div class="collapsible">
+<div class="collapsible-header">{{PATTERN_NAME}} ({{USAGE_CONTEXT}})</div>
+<div class="collapsible-content">
+<pre>{{CODE_EXAMPLE}}</pre>
+<p>{{EXPLANATION}}</p>
+</div>
+</div>
+<!-- ... repeat for each pattern ... -->
+
+<p style="margin-top:1.5rem"><a href="details-specialized.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Migration                                                -->
+<!-- Required: 6+ metric cards, critical path flow diagram,        -->
+<!--           phase table, dependency tree, test specs table,     -->
+<!--           validation criteria tables, business rule queries   -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-migration">
+<div class="card">
+<h2>🚀 Migration Planning</h2>
+
+<div class="stats-grid">
+<!-- 6+ cards: phases, active components, critical path depth, circular deps, test families, validation gates -->
+</div>
+
+<!-- Critical Path Flow Diagram -->
+<h3>Critical Path Visualization</h3>
+<div class="flow-diagram">
+<!-- flow-node chain showing the critical dependency path -->
+</div>
+
+<!-- Migration Phases Table -->
+<h3>Migration Phases</h3>
+<table>
+<tr><th>Phase</th><th>Components</th><th>Priority</th><th>Description</th></tr>
+<!-- ... rows with badge priorities ... -->
+</table>
+
+<!-- Dependency Tree -->
+<h3>Dependency Map — {{MAIN_BATCH}}</h3>
+<div class="tree-diagram">{{TREE_CONTENT}}</div>
+
+<!-- Test Specifications Summary -->
+<h3>Test Specifications by Component Family</h3>
+<table>
+<tr><th>Family</th><th>Key Test Types</th><th>Critical Checks</th></tr>
+<!-- ... rows with badge families ... -->
+</table>
+
+<!-- Validation Criteria -->
+<h3>Validation Criteria Summary</h3>
+<h4>Completeness Checks</h4>
+<table><tr><th>Check</th><th>Target</th><th>Criteria</th></tr><!-- ... --></table>
+<h4>Accuracy Checks</h4>
+<table><tr><th>Check</th><th>Formula/Rule</th><th>Tolerance</th></tr><!-- ... --></table>
+<h4>Consistency Checks</h4>
+<table><tr><th>Check</th><th>Description</th><th>Criteria</th></tr><!-- ... --></table>
+
+<!-- Integration Tests -->
+<h3>Integration Test Specifications</h3>
+<table>
+<tr><th>Test</th><th>Steps</th><th>Validation</th></tr>
+<!-- ... rows with badge severity ... -->
+</table>
+
+<!-- Business Rule Validation -->
+<h3>Business Rule Validation Queries</h3>
+<table>
+<tr><th>Rule</th><th>Validation Query</th><th>Expected</th></tr>
+<!-- ... rows with code snippets ... -->
+</table>
+
+<!-- Validation Gates — use business-outcome language for non-technical readers -->
+<h3>Go / No-Go Checkpoints</h3>
+<div class="alert alert-info"><strong>Checkpoint 1:</strong> {{GATE_1_DESC}}</div>
+<div class="alert alert-info"><strong>Checkpoint 2:</strong> {{GATE_2_DESC}}</div>
+<div class="alert alert-info"><strong>Checkpoint 3:</strong> {{GATE_3_DESC}}</div>
+<div class="alert alert-success"><strong>Checkpoint 4:</strong> {{GATE_4_DESC}}</div>
+
+<p style="margin-top:1.5rem"><a href="details-migration.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB: Recommendations & Roadmap (LAST — AI-generated)          -->
+<!-- Merged tab: AWS target architecture, component mapping,       -->
+<!-- remediation priorities, investment summary, cost of inaction,  -->
+<!-- approach comparison, phased plan, timeline, feasibility,      -->
+<!-- next steps. Focus on AWS Transform Custom + Kiro.             -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-recommendations">
+<div class="card">
+<h2>💡 Recommendations & Roadmap</h2>
+
+<!-- AWS Target Architecture Diagram — CONNECTED LAYERED STYLE -->
+<h3>Recommended AWS Target Architecture</h3>
+<div class="aws-diagram">
+<div class="diagram-title">Target Architecture — {{REGION}}</div>
+<div class="aws-region" data-label="{{REGION}}">
+<div class="diagram-container" style="border:none;padding:1rem;margin:0">
+<div class="diagram-layers">
+<div class="diagram-layer layer-presentation"><div class="layer-label">Ingress</div><div class="layer-components"><span class="component">{{INGRESS_SERVICE_1}}</span><span class="component">{{INGRESS_SERVICE_2}}</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-business"><div class="layer-label">Application / Processing</div><div class="layer-components"><span class="component">{{COMPUTE_SERVICE_1}}</span><span class="component">{{COMPUTE_SERVICE_2}}</span><span class="component">{{COMPUTE_SERVICE_3}}</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-data"><div class="layer-label">Data / Storage</div><div class="layer-components"><span class="component">{{DATA_SERVICE_1}}</span><span class="component">{{DATA_SERVICE_2}}</span><span class="component">{{DATA_SERVICE_3}}</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);border:1px solid #f9a8d4"><div class="layer-label">Security / Operations</div><div class="layer-components"><span class="component">{{SECURITY_SERVICE_1}}</span><span class="component">{{SECURITY_SERVICE_2}}</span><span class="component">{{SECURITY_SERVICE_3}}</span></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Component Mapping Table -->
+<h3>Component Mapping</h3>
+<table>
+<tr><th>Current</th><th>AWS Target</th><th>Rationale</th></tr>
+<tr><td>{{CURRENT}}</td><td>{{TARGET}}</td><td>{{RATIONALE}}</td></tr>
+</table>
+
+<!-- Remediation Priorities -->
+<h3>Remediation Priorities</h3>
+<h4>Priority 1 — Immediate (Before Migration)</h4>
+<ul><li><strong>{{ACTION}}</strong> — {{DESCRIPTION}}</li></ul>
+<h4>Priority 2 — During Migration</h4>
+<ul><li><strong>{{ACTION}}</strong> — {{DESCRIPTION}}</li></ul>
+<h4>Priority 3 — Post-Migration</h4>
+<ul><li><strong>{{ACTION}}</strong> — {{DESCRIPTION}}</li></ul>
+
+<!-- Migration Risk Assessment -->
+<h3>Migration Risk Assessment</h3>
+<table>
+<tr><th>Risk</th><th>Severity</th><th>Likelihood</th><th>Mitigation</th></tr>
+<tr><td>{{RISK}}</td><td><span class="badge badge-critical">{{SEVERITY}}</span></td><td>{{LIKELIHOOD}}</td><td>{{MITIGATION}}</td></tr>
+</table>
+
+<!-- Investment Summary -->
+<h3>Investment Summary</h3>
+<div class="stats-grid">
+<div class="stat-card critical"><div class="stat-label">Current Annual Cost</div><div class="stat-value">~${{CURRENT_ANNUAL}}</div><div class="stat-description">{{CURRENT_COST_BREAKDOWN}}</div></div>
+<div class="stat-card success"><div class="stat-label">Post-Migration Annual Cost</div><div class="stat-value">~${{TARGET_ANNUAL}}</div><div class="stat-description">AWS infrastructure + maintenance</div></div>
+<div class="stat-card warning"><div class="stat-label">Migration Investment</div><div class="stat-value">~${{MIGRATION_COST}}</div><div class="stat-description">{{TIMELINE}} • {{TEAM_SIZE}}</div></div>
+<div class="stat-card success"><div class="stat-label">Estimated Payback</div><div class="stat-value">{{PAYBACK_PERIOD}}</div><div class="stat-description">Based on annual savings of ~${{ANNUAL_SAVINGS}}</div></div>
+</div>
+
+<!-- Cost of Inaction -->
+<div class="alert alert-danger"><strong>Cost of Inaction:</strong>
+<ul style="margin-top:.5rem">
+<li><strong>Regulatory Exposure</strong> — {{REGULATORY_RISK}}</li>
+<li><strong>Developer Scarcity</strong> — {{DEVELOPER_SCARCITY_RISK}}</li>
+<li><strong>Platform Collapse</strong> — {{PLATFORM_RISK}}</li>
+<li><strong>Security Incident</strong> — {{SECURITY_RISK}}</li>
+</ul>
+</div>
+
+<!-- Recommended Approach -->
+<h3>Recommended Approach: {{TARGET_FRAMEWORK}}</h3>
+<div class="alert alert-success"><strong>Recommendation:</strong> {{APPROACH_JUSTIFICATION}}</div>
+<table>
+<tr><th>Option</th><th>Fit</th><th>Rationale</th></tr>
+<tr><td>{{OPTION_1}}</td><td><span class="badge badge-low">Recommended ✓</span></td><td>{{RATIONALE_1}}</td></tr>
+<tr><td>{{OPTION_2}}</td><td><span class="badge badge-info">Alternative</span></td><td>{{RATIONALE_2}}</td></tr>
+<tr><td>{{OPTION_3}}</td><td><span class="badge badge-high">Not Recommended</span></td><td>{{RATIONALE_3}}</td></tr>
+</table>
+
+<!-- Step-by-Step Migration Plan -->
+<h3>Step-by-Step Migration Plan</h3>
+<h4>Phase 0: Pre-Migration Cleanup ({{DURATION_0}})</h4>
+<table>
+<tr><th>Step</th><th>Action</th><th>Duration</th><th>Output</th></tr>
+<tr><td>0.1</td><td>{{ACTION}}</td><td>{{DURATION}}</td><td>{{OUTPUT}}</td></tr>
+</table>
+<!-- Repeat Phase tables as needed (Phase 1, 2, 3, ...) -->
+
+<!-- Timeline Summary -->
+<h3>Timeline Summary</h3>
+<div class="flow-diagram">
+<div class="flow-node client">Phase 0<br>{{NAME}}<br>{{DURATION}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Phase 1<br>{{NAME}}<br>{{DURATION}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Phase 2<br>{{NAME}}<br>{{DURATION}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">Phase 3<br>{{NAME}}<br>{{DURATION}}</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node external">Validation<br>{{DURATION}}</div>
+</div>
+<div class="alert alert-info"><strong>Total: ~{{TOTAL_TIMELINE}}</strong> — Team: {{TEAM_COMPOSITION}}.</div>
+
+<!-- Estimated Migration Investment -->
+<h3>Estimated Migration Investment</h3>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Team Size</div><div class="stat-value">{{TEAM_COUNT}}</div><div class="stat-description">{{TEAM_ROLES}}</div></div>
+<div class="stat-card warning"><div class="stat-label">Duration</div><div class="stat-value">{{TIMELINE_RANGE}}</div><div class="stat-description">Including validation</div></div>
+<div class="stat-card"><div class="stat-label">Estimated Cost</div><div class="stat-value">~${{TOTAL_COST}}</div><div class="stat-description">Team × duration (blended rate)</div></div>
+</div>
+
+<!-- AWS Transform Custom + Kiro Feasibility -->
+<h3>AWS Transform Custom + Kiro — Feasibility</h3>
+<div class="alert alert-info"><strong>This report was generated by AWS Transform Custom (comprehensive-codebase-analysis).</strong> The migration can be executed using Kiro's agent-assisted development with specs, hooks, and steering for each phase.</div>
+<table>
+<tr><th>Approach</th><th>Status</th><th>Description</th></tr>
+<tr><td>ATX Comprehensive Analysis</td><td><span class="badge badge-low">Completed ✓</span></td><td>This report — full codebase analysis with migration planning</td></tr>
+<tr><td>{{ATX_TRANSFORMATION_NAME}}</td><td><span class="badge badge-critical">{{ATX_TRANSFORMATION_STATUS}}</span></td><td>{{ATX_TRANSFORMATION_DESC}}</td></tr>
+<tr><td>Kiro-Assisted Migration</td><td><span class="badge badge-low">Recommended ✓</span></td><td>Use Kiro specs + agent to execute each migration phase with AI-assisted coding</td></tr>
+</table>
+
+<!-- Recommended Next Steps -->
+<h3>Recommended Next Steps</h3>
+<ol>
+<li><strong>{{STEP_1}}</strong> — {{DESCRIPTION}}</li>
+<li><strong>{{STEP_2}}</strong> — {{DESCRIPTION}}</li>
+<li><strong>{{STEP_3}}</strong> — {{DESCRIPTION}}</li>
+</ol>
+</div>
+</div>
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<div class="footer">
+<p>{{PROJECT_TITLE}} — Generated {{DATE}}</p>
+<p>{{AREAS}} areas • {{FILES}} input files • {{PAGES}} detail pages</p>
+<p style="font-size:.85rem;opacity:.7">Conversation ID: <code>{{ATX_CONVERSATION_ID}}</code> | Agent Minutes: <code>{{AGENT_MINUTES}}</code></p>
+</div>
+
+<!-- MERMAID.JS — Local file reference for self-contained rendering (copied from templates/atx-analysis-report/mermaid.min.js) -->
+<script src="mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:false,theme:'default',securityLevel:'loose'});</script>
+
+<!-- TAB SWITCHING + COLLAPSIBLE + HASH ROUTING + MERMAID RENDER JS — REQUIRED (no dark mode) -->
+<script>
+(function() {
+  // Render mermaid blocks inside a container (only unprocessed ones)
+  function renderMermaid(container) {
+    var blocks = container.querySelectorAll('pre.mermaid:not([data-processed])');
+    if (blocks.length > 0) {
+      mermaid.run({nodes: blocks});
+    }
+  }
+  // Tab switching
+  document.querySelectorAll('.nav-tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.getAttribute('data-tab-id'));
+      if (target) {
+        target.classList.add('active');
+        renderMermaid(target);
+      }
+      history.replaceState(null, '', '#' + btn.getAttribute('data-tab-id'));
+    });
+  });
+  // Hash-based tab activation (from detail page back links or bookmarks)
+  function activateFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash) {
+      var btn = document.querySelector('.nav-tab[data-tab-id="' + hash + '"]');
+      if (btn) btn.click();
+    }
+  }
+  activateFromHash();
+  window.addEventListener('hashchange', activateFromHash);
+  // Collapsible sections (click + keyboard)
+  document.querySelectorAll('.collapsible-header').forEach(function(h) {
+    function toggle() {
+      h.classList.toggle('expanded');
+      h.nextElementSibling.classList.toggle('show');
+    }
+    h.addEventListener('click', toggle);
+    h.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+  // Render mermaid in the initially active tab
+  var activeTab = document.querySelector('.tab-content.active');
+  if (activeTab) renderMermaid(activeTab);
+})();
+</script>
+
+</body>
+</html>

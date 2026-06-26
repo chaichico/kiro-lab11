@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wild Rydes — Assessment Report</title>
+<style>
+/*
+ * AWS Transform Assessment Report — CSS Styles (Single Source of Truth)
+ * 
+ * Complete CSS for assessment reports (index.html + details-*.html).
+ * Include the contents of this file in a <style> tag in each generated HTML file.
+ * Do NOT link to this file — each HTML must be self-contained with inline CSS.
+ */
+
+/* Skip Link (Accessibility) */
+.skip-link{position:absolute;top:-100%;left:1rem;background:var(--accent);color:#fff;padding:.75rem 1.5rem;border-radius:0 0 6px 6px;z-index:2000;font-weight:600;text-decoration:none;transition:top .2s}
+.skip-link:focus{top:0}
+
+:root{--primary:#232f3e;--secondary:#ff9900;--accent:#146eb4;--success:#1d8102;--warning:#ff9900;--danger:#d13212;--bg:#f8f9fa;--card:#fff;--text:#16191f;--text2:#545b64;--border:#d5dbdb;--code-bg:#f4f4f4;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--mono:'SF Mono','Fira Code','Courier New',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);line-height:1.6;color:var(--text);background:var(--bg)}
+
+/* Header */
+.header{background:linear-gradient(135deg,var(--primary),#1a242f);color:#fff;padding:2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.header-content{max-width:1400px;margin:0 auto;padding:0 2rem}
+.header-logo{display:flex;align-items:center;gap:1.5rem}
+.aws-logo{height:48px;width:auto;filter:brightness(0) invert(1)}
+.header h1{font-size:2.5rem;font-weight:300;margin-bottom:.5rem}
+.header .subtitle{font-size:1.1rem;opacity:.9}
+.critical-banner{background:linear-gradient(135deg,var(--danger),#a82a0c);color:#fff;padding:1.25rem 2rem;text-align:center;font-weight:500}
+.critical-banner strong{font-size:1.2rem;display:block;margin-bottom:.25rem}
+
+/* Container & Navigation */
+.container{max-width:1400px;margin:0 auto;padding:2rem}
+.page-nav{background:var(--card);border-bottom:1px solid var(--border);padding:.5rem 2rem;display:flex;gap:.25rem;flex-wrap:wrap;max-width:1400px;margin:0 auto}
+.page-nav a{padding:.5rem 1rem;color:var(--text2);text-decoration:none;font-size:.85rem;border-radius:4px;transition:all .2s}
+.page-nav a:hover{background:var(--bg);color:var(--text)}
+.page-nav a.current{background:var(--accent);color:#fff;font-weight:600}
+
+/* Tab Navigation */
+.nav-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap;background:#fff;padding:1rem;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.nav-tab{padding:.75rem 1.5rem;background:var(--bg);border:2px solid var(--border);border-radius:6px;cursor:pointer;transition:all .3s;font-weight:500;color:var(--text);font-size:.9rem}
+.nav-tab:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
+.nav-tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.nav-tab.active{background:var(--secondary);color:#fff;border-color:var(--secondary)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:2rem;margin-bottom:2rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{color:var(--primary);margin-bottom:1.5rem;font-size:1.8rem;border-bottom:3px solid var(--secondary);padding-bottom:.5rem}
+.card h3{color:var(--accent);margin:1.5rem 0 1rem;font-size:1.4rem}
+.card h4{color:var(--text);margin:1rem 0 .5rem;font-size:1.1rem}
+
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin:2rem 0}
+.stat-card{background:linear-gradient(135deg,var(--card),#f0f3f5);padding:1.5rem;border-radius:8px;border-left:4px solid var(--accent);box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.stat-card.critical{border-left-color:var(--danger);background:linear-gradient(135deg,#fff5f5,#ffe6e6)}
+.stat-card.warning{border-left-color:var(--warning);background:linear-gradient(135deg,#fffbf0,#fff4d6)}
+.stat-card.success{border-left-color:var(--success);background:linear-gradient(135deg,#f0fff4,#d9f7e6)}
+.stat-label{font-size:.9rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.stat-value{font-size:2rem;font-weight:700}
+.stat-description{font-size:.85rem;color:var(--text2);margin-top:.5rem}
+
+/* Badges */
+.badge{display:inline-block;padding:.25rem .75rem;border-radius:12px;font-size:.85rem;font-weight:600;text-transform:uppercase}
+.badge-critical{background:var(--danger);color:#fff}
+.badge-high{background:#ea580c;color:#fff}
+.badge-medium{background:#ca8a04;color:#fff}
+.badge-low{background:var(--success);color:#fff}
+.badge-info{background:var(--accent);color:#fff}
+
+/* Tables (responsive) */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+th{background:var(--primary);color:#fff;padding:1rem;text-align:left;font-weight:600}
+td{padding:.75rem 1rem;border-bottom:1px solid var(--border)}
+tr:hover{background:var(--bg)}
+
+/* Code */
+pre{background:var(--code-bg);color:var(--text);padding:1rem;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:.85rem;border-left:4px solid var(--accent);margin:1rem 0;white-space:pre-wrap}
+code{font-family:var(--mono);font-size:.9em}
+:not(pre)>code{background:#f1f5f9;padding:.1rem .35rem;border-radius:3px;color:#be185d}
+
+/* Alerts */
+.alert{padding:1rem 1.5rem;border-radius:6px;margin:1.5rem 0;border-left:4px solid}
+.alert-danger{background:#fff5f5;border-left-color:var(--danger);color:#721c24}
+.alert-warning{background:#fffbf0;border-left-color:var(--warning);color:#856404}
+.alert-info{background:#e7f3ff;border-left-color:var(--accent);color:#004085}
+.alert-success{background:#f0fff4;border-left-color:var(--success);color:#155724}
+
+/* Diagrams */
+.diagram-container{background:#fff;border:2px solid var(--border);border-radius:12px;padding:2rem;margin:1.5rem 0}
+.diagram-title{font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:1px}
+.diagram-layers{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.diagram-layer{width:100%;max-width:600px;padding:1rem 1.5rem;border-radius:8px;text-align:center}
+.layer-label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.layer-components{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.component{background:rgba(255,255,255,.8);padding:.3rem .8rem;border-radius:4px;font-size:.85rem;border:1px solid rgba(0,0,0,.1)}
+.layer-presentation{background:linear-gradient(135deg,#e7f3ff,#cce5ff);border:1px solid #99caff}
+.layer-business{background:linear-gradient(135deg,#fff4e6,#ffe8cc);border:1px solid #ffcc80}
+.layer-data{background:linear-gradient(135deg,#e6f9e6,#ccf2cc);border:1px solid #80d980}
+.diagram-arrow{font-size:1.5rem;color:var(--text2);text-align:center}
+
+/* Flow Diagrams */
+.flow-diagram{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:center;padding:1.5rem;background:#fff;border:2px solid var(--border);border-radius:12px;margin:1.5rem 0}
+.flow-node{padding:.75rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;text-align:center;min-width:100px}
+.flow-node.client{background:#e7f3ff;border:2px solid #146eb4;color:#146eb4}
+.flow-node.service{background:#fff4e6;border:2px solid #ff9900;color:#232f3e}
+.flow-node.database{background:#e6f9e6;border:2px solid #1d8102;color:#1d8102}
+.flow-node.external{background:#f5f5f5;border:2px dashed #545b64;color:#545b64}
+.flow-arrow{font-size:1.25rem;color:var(--text2)}
+
+/* AWS Diagrams */
+.aws-diagram{background:linear-gradient(135deg,#fafbfc,#f0f3f5);border:2px solid var(--border);border-radius:12px;padding:2rem;margin:1.5rem 0}
+.aws-diagram .aws-region{border:2px dashed #146eb4;border-radius:8px;padding:1.5rem;margin:1rem 0;position:relative}
+.aws-diagram .aws-region::before{content:attr(data-label);position:absolute;top:-.75rem;left:1rem;background:#fff;padding:0 .5rem;font-size:.75rem;color:#146eb4;font-weight:600}
+.aws-diagram .aws-service{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:6px;margin:.25rem;font-size:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.aws-diagram .aws-service .icon{font-size:1.25rem}
+
+/* Collapsible Sections */
+.collapsible{margin-bottom:1rem;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.collapsible-header{padding:.75rem 1rem;background:#f8fafc;cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.collapsible-header:hover{background:#f1f5f9}
+.collapsible-header::after{content:'▶';font-size:.7rem;transition:transform .2s}
+.collapsible-header.expanded::after{transform:rotate(90deg)}
+.collapsible-content{display:none;padding:1.5rem;border-top:1px solid var(--border)}
+.collapsible-content.show{display:block}
+
+/* Links & Buttons */
+.back-link{color:var(--accent);text-decoration:none;font-weight:600;display:inline-block;margin-bottom:1.5rem}
+.back-link:hover{text-decoration:underline}
+.btn{display:inline-block;padding:.75rem 1.5rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:6px;font-weight:600;transition:opacity .3s}
+.btn:hover{opacity:.9}
+
+/* Lists */
+ul,ol{margin:1rem 0 1rem 2rem}
+li{margin:.5rem 0}
+
+/* Footer */
+.footer{background:var(--primary);color:#fff;text-align:center;padding:2rem;margin-top:4rem}
+.footer p{opacity:.8}
+
+/* Responsive */
+@media(max-width:768px){.nav-tabs{flex-direction:column}.stats-grid{grid-template-columns:1fr}.header h1{font-size:1.8rem}.page-nav{flex-direction:column}.readiness-score{flex-direction:column;text-align:center}.flow-diagram{gap:.25rem}.flow-node{min-width:80px;font-size:.75rem;padding:.5rem .75rem}}
+
+/* Print */
+@media print{.nav-tabs,.page-nav{display:none}.tab-content{display:block!important}.collapsible-content{display:block!important}pre{white-space:pre-wrap}
+.tab-content:not(#tab-overview){page-break-before:always}
+:root{--primary:#232f3e;--bg:#fff;--card:#fff;--text:#16191f;--text2:#545b64;--border:#d5dbdb;--code-bg:#f4f4f4}
+}
+
+/* Readiness Score */
+.readiness-score{display:flex;align-items:center;gap:1.5rem;padding:1.5rem;border-radius:12px;margin:1.5rem 0}
+.readiness-score.low{background:linear-gradient(135deg,#fff5f5,#ffe6e6);border:2px solid var(--danger)}
+.readiness-score.medium{background:linear-gradient(135deg,#fffbf0,#fff4d6);border:2px solid var(--warning)}
+.readiness-score.high{background:linear-gradient(135deg,#f0fff4,#d9f7e6);border:2px solid var(--success)}
+.readiness-score .score-circle{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.readiness-score .score-inner{width:80px;height:80px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700}
+.readiness-score .score-details{flex:1}
+.readiness-score .score-details h4{margin:0 0 .5rem;font-size:1.2rem}
+.readiness-score .score-details p{margin:0;font-size:.9rem;color:var(--text2)}
+
+/* Tree Diagram */
+.tree-diagram{font-family:var(--mono);font-size:.85rem;line-height:1.8;background:var(--code-bg);padding:1.5rem;border-radius:8px;border-left:4px solid var(--accent);margin:1.5rem 0;overflow-x:auto;white-space:pre}
+
+/* Blockquotes */
+blockquote{border-left:4px solid var(--accent);padding:.75rem 1.25rem;margin:1rem 0;background:var(--bg);color:var(--text2);font-style:italic}
+
+/* Mermaid Fallback (rendered as code block on detail pages) */
+.mermaid-fallback{font-family:var(--mono);font-size:.85rem;line-height:1.6;background:var(--code-bg);padding:1.5rem;border-radius:8px;border-left:4px solid #7c3aed;margin:1.5rem 0;overflow-x:auto;white-space:pre}
+.mermaid-label{display:inline-block;background:#7c3aed;color:#fff;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:3px;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="header">
+<div class="header-content">
+<div class="header-logo">
+<img src="aws-logo.png" alt="AWS" class="aws-logo">
+<div>
+<h1>Wild Rydes</h1>
+<p class="subtitle">Unicorn Ride-Sharing Web Application — ASP.NET MVC 5 on .NET Framework 4.8.1 • 17 C# files • ~600 LOC • Generated 2026-06-26</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="critical-banner">
+<strong>⚠️ 7 Critical/High Issues Identified</strong>
+.NET Framework 4.8.1 maintenance-only • ASP.NET MVC 5 legacy • Entity Framework 6 EOL • Unsalted SHA-256 passwords • Open redirect vulnerability • Missing CSRF on APIs • Information disclosure — Business at risk of security breach and platform obsolescence
+</div>
+
+<div class="container" id="main-content">
+
+<div class="nav-tabs">
+<button class="nav-tab active" data-tab-id="tab-overview">📋 Overview</button>
+<button class="nav-tab" data-tab-id="tab-architecture">🏗️ Architecture</button>
+<button class="nav-tab" data-tab-id="tab-behavior">⚙️ Behavior</button>
+<button class="nav-tab" data-tab-id="tab-analysis">📊 Analysis</button>
+<button class="nav-tab" data-tab-id="tab-technical-debt">⚠️ Technical Debt</button>
+<button class="nav-tab" data-tab-id="tab-diagrams">📈 Diagrams</button>
+<button class="nav-tab" data-tab-id="tab-reference">📚 Reference</button>
+<button class="nav-tab" data-tab-id="tab-specialized">🔧 Specialized</button>
+<button class="nav-tab" data-tab-id="tab-migration">🚀 Migration</button>
+<button class="nav-tab" data-tab-id="tab-recommendations">💡 Recommendations & Roadmap</button>
+</div>
+
+<!-- TAB: Overview -->
+<div class="tab-content active" id="tab-overview">
+<div class="card">
+<h2>📋 Executive Dashboard</h2>
+
+<div class="alert alert-info" style="font-size:1.05rem;line-height:1.7">
+<strong>What is this system?</strong> Wild Rydes is an online ride-sharing service where customers request unicorn rides through a web browser. Users register, log in, pick locations on a map, and get assigned a unicorn for their trip. It serves as a demonstration application for AWS services integration.
+</div>
+
+<div class="readiness-score medium">
+<div class="score-circle" style="background:conic-gradient(var(--warning) 0% 50%,#e0e0e0 50% 100%)">
+  <div class="score-inner" style="color:var(--warning)">5/10</div>
+</div>
+<div class="score-details">
+  <h4 style="color:var(--warning)">Migration Readiness Score: 5 / 10</h4>
+  <p><strong>Justification:</strong> Incremental migration is possible. The application is small (~600 LOC), well-structured MVC with clear separation of concerns, and already uses AWS SDK v4. However, it requires a full platform migration (.NET Framework → .NET 8+), has critical security vulnerabilities, zero test coverage, and Windows-only infrastructure.</p>
+</div>
+</div>
+
+<div class="stats-grid">
+<div class="stat-card critical"><div class="stat-label">High Severity Issues</div><div class="stat-value">7</div><div class="stat-description">3 platform + 4 security</div></div>
+<div class="stat-card warning"><div class="stat-label">Medium Severity Issues</div><div class="stat-value">8</div><div class="stat-description">4 dependencies + 4 architectural</div></div>
+<div class="stat-card"><div class="stat-label">Application Code</div><div class="stat-value">~600</div><div class="stat-description">Lines of C# (excluding libraries)</div></div>
+<div class="stat-card"><div class="stat-label">Source Files</div><div class="stat-value">17</div><div class="stat-description">C# source files</div></div>
+<div class="stat-card"><div class="stat-label">Test Coverage</div><div class="stat-value">0%</div><div class="stat-description">No tests exist</div></div>
+<div class="stat-card success"><div class="stat-label">AWS SDK</div><div class="stat-value">v4</div><div class="stat-description">Current — no upgrade needed</div></div>
+</div>
+
+<h3>🚨 Key Risks</h3>
+<div class="alert alert-danger"><strong>Risk 1 — Security Breach:</strong> Unsalted SHA-256 password hashing and open redirect vulnerabilities expose customer accounts to credential theft and phishing attacks.</div>
+<div class="alert alert-danger"><strong>Risk 2 — Platform Obsolescence:</strong> .NET Framework 4.8.1 receives security patches only. No new features, no cross-platform support, shrinking developer talent pool.</div>
+<div class="alert alert-danger"><strong>Risk 3 — Operational Fragility:</strong> Zero test coverage means any code change risks breaking production with no safety net. Windows-only deployment limits infrastructure options and increases costs.</div>
+
+<h3>Platform &amp; Technology Stack</h3>
+<table>
+<tr><th>Component</th><th>Technology</th><th>Status</th></tr>
+<tr><td>Runtime</td><td>.NET Framework 4.8.1</td><td><span class="badge badge-critical">Maintenance Only</span></td></tr>
+<tr><td>Web Framework</td><td>ASP.NET MVC 5.3.0</td><td><span class="badge badge-critical">Legacy</span></td></tr>
+<tr><td>ORM</td><td>Entity Framework 6.5.1</td><td><span class="badge badge-high">Superseded</span></td></tr>
+<tr><td>Database</td><td>SQL Server LocalDB</td><td><span class="badge badge-medium">Dev Only</span></td></tr>
+<tr><td>Container</td><td>Windows Server Core LTSC 2019</td><td><span class="badge badge-medium">~5GB Image</span></td></tr>
+<tr><td>Frontend</td><td>Bootstrap 5.3.7 / jQuery 3.7.1</td><td><span class="badge badge-low">Current</span></td></tr>
+<tr><td>AWS SDK</td><td>AWS SDK for .NET v4</td><td><span class="badge badge-low">Current</span></td></tr>
+</table>
+
+<h3>Business Domain</h3>
+<table>
+<tr><th>Area</th><th>Components</th><th>Description</th></tr>
+<tr><td>User Management</td><td>UserController, Protected filter</td><td>Registration, authentication, session management</td></tr>
+<tr><td>Ride Operations</td><td>RideController, RideModel</td><td>Ride requests, map interaction, geocoding, ride history</td></tr>
+<tr><td>Fleet Management</td><td>UnicornController, UnicornModel</td><td>Unicorn CRUD with ratings</td></tr>
+<tr><td>Map Services</td><td>AWS Location Service integration</td><td>Map tiles, reverse geocoding via server-side proxy</td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-overview.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Architecture -->
+<div class="tab-content" id="tab-architecture">
+<div class="card">
+<h2>🏗️ Architecture Summary</h2>
+<p>Traditional server-rendered monolithic MVC application. All components deploy as a single unit within IIS in a Windows Docker container. The architecture follows the classic Model-View-Controller pattern with Entity Framework 6 for data access and AWS SDK for external map services.</p>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Controllers</div><div class="stat-value">4</div><div class="stat-description">Home, User, Ride, Unicorn</div></div>
+<div class="stat-card"><div class="stat-label">Models</div><div class="stat-value">5</div><div class="stat-description">3 entities + Location + Rating</div></div>
+<div class="stat-card"><div class="stat-label">Views</div><div class="stat-value">12</div><div class="stat-description">Razor .cshtml templates</div></div>
+<div class="stat-card"><div class="stat-label">Design Patterns</div><div class="stat-value">6</div><div class="stat-description">MVC, Repository, Filter, Proxy, etc.</div></div>
+<div class="stat-card warning"><div class="stat-label">Anti-Patterns</div><div class="stat-value">5</div><div class="stat-description">Tight coupling, fat controller, etc.</div></div>
+</div>
+
+<div class="diagram-container">
+<div class="diagram-title">Application Architecture</div>
+<div class="diagram-layers">
+<div class="diagram-layer layer-presentation"><div class="layer-label">Presentation Layer</div><div class="layer-components"><span class="component">Razor Views (12)</span><span class="component">Bootstrap 5</span><span class="component">jQuery</span><span class="component">Leaflet.js</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-business"><div class="layer-label">Business Logic Layer</div><div class="layer-components"><span class="component">HomeController</span><span class="component">UserController</span><span class="component">RideController</span><span class="component">UnicornController</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-data"><div class="layer-label">Data Access Layer</div><div class="layer-components"><span class="component">DefaultContext (EF6)</span><span class="component">SQL Server LocalDB</span><span class="component">AWS Location SDK</span></div></div>
+</div>
+</div>
+
+<h3>Design Patterns Identified</h3>
+<table>
+<tr><th>Pattern</th><th>Usage</th><th>Assessment</th></tr>
+<tr><td>Model-View-Controller</td><td>Primary application pattern</td><td><span class="badge badge-info">Standard</span></td></tr>
+<tr><td>Repository (Implicit)</td><td>DefaultContext as unit-of-work via EF6 DbSet</td><td><span class="badge badge-medium">No Abstraction</span></td></tr>
+<tr><td>Action Filter</td><td>Protected attribute for auth enforcement</td><td><span class="badge badge-info">Good</span></td></tr>
+<tr><td>Complex Type (Value Object)</td><td>Location embedded in RideModel</td><td><span class="badge badge-info">Standard EF6</span></td></tr>
+<tr><td>Proxy</td><td>GetMapTile proxies AWS Location tiles</td><td><span class="badge badge-info">Security Best Practice</span></td></tr>
+<tr><td>Seed Data</td><td>EF6 migrations Configuration.Seed()</td><td><span class="badge badge-medium">Hardcoded Credentials</span></td></tr>
+</table>
+
+<h3>Anti-Patterns Detected</h3>
+<table>
+<tr><th>Anti-Pattern</th><th>Location</th><th>Severity</th></tr>
+<tr><td>Tight Coupling / No DI</td><td>All controllers instantiate dependencies directly</td><td><span class="badge badge-medium">Medium</span></td></tr>
+<tr><td>Fat Controller</td><td>RideController handles rides, map tiles, geocoding, user lookup</td><td><span class="badge badge-medium">Medium</span></td></tr>
+<tr><td>Anemic Domain Model</td><td>Models are data containers with no business logic</td><td><span class="badge badge-low">Low</span></td></tr>
+<tr><td>Security Through Obscurity</td><td>Password hashing duplicated in 2 locations</td><td><span class="badge badge-high">High</span></td></tr>
+<tr><td>Mixed Auth Enforcement</td><td>Some use [Protected], others check session manually</td><td><span class="badge badge-medium">Medium</span></td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-architecture.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Behavior -->
+<div class="tab-content" id="tab-behavior">
+<div class="card">
+<h2>⚙️ Business Logic &amp; Workflows</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Workflows</div><div class="stat-value">5</div><div class="stat-description">Registration, Login, Ride Request, History, Fleet Mgmt</div></div>
+<div class="stat-card"><div class="stat-label">Decision Points</div><div class="stat-value">12</div><div class="stat-description">Auth checks, validation, error handling</div></div>
+<div class="stat-card"><div class="stat-label">Error Handlers</div><div class="stat-value">4</div><div class="stat-description">Try-catch + global filter</div></div>
+<div class="stat-card warning"><div class="stat-label">Missing Validations</div><div class="stat-value">4</div><div class="stat-description">Lat/lng range, null unicorn, null user, no transactions</div></div>
+</div>
+
+<h3>Ride Request Workflow</h3>
+<div class="flow-diagram">
+<div class="flow-node client">User Opens Map</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Geolocate + Geocode</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Select Destination</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Confirm Ride</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">Save to DB</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node external">Return Unicorn</div>
+</div>
+
+<h3>Core Workflows (5 Total)</h3>
+<table>
+<tr><th>Workflow</th><th>Entry Point</th><th>Steps</th><th>Critical Path</th></tr>
+<tr><td>User Registration</td><td>GET/POST /User/Create</td><td>Validate → Hash → Save → Redirect</td><td>No</td></tr>
+<tr><td>User Login</td><td>GET/POST /User/Login</td><td>Validate → Lookup → Compare → Set Session</td><td>Yes — auth gate</td></tr>
+<tr><td>Ride Request</td><td>POST /Ride/CreateRide</td><td>Auth → User Lookup → Random Unicorn → Save</td><td>Yes — core business</td></tr>
+<tr><td>Ride History</td><td>GET /Ride/Index</td><td>Auth → User Lookup → Query Rides → Render</td><td>No</td></tr>
+<tr><td>Unicorn CRUD</td><td>/Unicorn/*</td><td>Auth → List/Create/Delete</td><td>No</td></tr>
+</table>
+
+<h3>Error Handling Patterns</h3>
+<div class="alert alert-warning"><strong>Mixed Strategy:</strong> The application uses 3 different error handling approaches — global HandleErrorAttribute for unhandled exceptions, try-catch with JSON error responses in API endpoints, and null checks with HTTP status codes. Exception messages are leaked to clients in CreateRide (information disclosure).</div>
+
+<table>
+<tr><th>Component</th><th>Pattern</th><th>Issue</th></tr>
+<tr><td>RideController.CreateRide</td><td>Try-catch → JSON error</td><td>Exposes ex.Message to client</td></tr>
+<tr><td>RideController.GetMapTile</td><td>Typed catch → HTTP status</td><td>Swallows exception details</td></tr>
+<tr><td>RideController.ReverseGeocode</td><td>Graceful degradation</td><td>Falls back to coordinates</td></tr>
+<tr><td>Global</td><td>HandleErrorAttribute</td><td>Generic error page, no logging</td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-behavior.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Analysis -->
+<div class="tab-content" id="tab-analysis">
+<div class="card">
+<h2>📊 Code Analysis</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Application LOC</div><div class="stat-value">~600</div><div class="stat-description">C# lines (excluding bundled libraries)</div></div>
+<div class="stat-card"><div class="stat-label">Largest File</div><div class="stat-value">175</div><div class="stat-description">RideController.cs — lines</div></div>
+<div class="stat-card warning"><div class="stat-label">Security Findings</div><div class="stat-value">5</div><div class="stat-description">2 High, 2 Medium, 1 Low</div></div>
+<div class="stat-card"><div class="stat-label">NuGet Packages</div><div class="stat-value">28</div><div class="stat-description">+ 2 CDN dependencies</div></div>
+</div>
+
+<h3>Complexity Distribution</h3>
+<table>
+<tr><th>Tier</th><th>Range</th><th>Count</th><th>%</th><th>Risk</th></tr>
+<tr><td>🔴 Medium-High</td><td>CC 5</td><td>2</td><td>14%</td><td><span class="badge badge-high">Elevated</span></td></tr>
+<tr><td>🟡 Low-Medium</td><td>CC 3-4</td><td>2</td><td>14%</td><td><span class="badge badge-medium">Moderate</span></td></tr>
+<tr><td>🟢 Low</td><td>CC 1-2</td><td>10</td><td>72%</td><td><span class="badge badge-low">Minimal</span></td></tr>
+</table>
+
+<h3>Code Metrics Comparison Table</h3>
+<table>
+<tr><th>Metric</th><th>Wild Rydes</th><th>Industry Threshold</th><th>Assessment</th></tr>
+<tr><td>Max Cyclomatic Complexity</td><td>5</td><td>&lt;10 good, &gt;20 critical</td><td><span class="badge badge-low">Good</span></td></tr>
+<tr><td>Test Coverage</td><td>0%</td><td>&gt;80% recommended</td><td><span class="badge badge-critical">Critical</span></td></tr>
+<tr><td>Code Duplication</td><td>3 patterns</td><td>0 ideal</td><td><span class="badge badge-medium">Moderate</span></td></tr>
+<tr><td>Dependency Count</td><td>28 NuGet + 2 CDN</td><td>Context-dependent</td><td><span class="badge badge-info">Acceptable</span></td></tr>
+</table>
+
+<h3>Security Assessment</h3>
+<div class="alert alert-danger">🔴 <strong>Unsalted SHA-256 Password Hashing</strong> — Passwords vulnerable to rainbow table attacks. Must replace with bcrypt/PBKDF2 with per-user salt.</div>
+<div class="alert alert-danger">🔴 <strong>Open Redirect Vulnerability</strong> — Login redirects to unvalidated user-supplied URL via <code>?or=</code> parameter. Enables phishing attacks.</div>
+<div class="alert alert-warning">🟠 <strong>Missing CSRF on API Endpoints</strong> — CreateRide and ReverseGeocode lack anti-forgery token validation. Cross-site request forgery possible.</div>
+<div class="alert alert-warning">🟠 <strong>Information Disclosure</strong> — Exception messages returned to client in CreateRide catch block. May leak internal system details.</div>
+<div class="alert alert-info">🔵 <strong>Hardcoded Credentials in Seed Data</strong> — Default user credentials in source code (user@unicornrides.aws / Passw0rd). Risk if seed runs in production.</div>
+
+<h3>External Dependencies — By Category</h3>
+<div class="alert alert-warning"><strong>⚠️ 6 dependency categories</strong> — totaling 30+ external components.</div>
+<table>
+<tr><th>Category</th><th>Count</th><th>Key Components</th><th>Risk</th></tr>
+<tr><td>AWS SDK</td><td>4</td><td>Core, Cognito, Location, STS</td><td><span class="badge badge-low">Current</span></td></tr>
+<tr><td>Web Framework</td><td>5</td><td>MVC 5, Razor, WebPages, Optimization, Infrastructure</td><td><span class="badge badge-critical">Legacy</span></td></tr>
+<tr><td>Data Access</td><td>1</td><td>Entity Framework 6.5.1</td><td><span class="badge badge-high">Superseded</span></td></tr>
+<tr><td>Frontend</td><td>4</td><td>Bootstrap, jQuery, Validation, Modernizr</td><td><span class="badge badge-low">Mostly Current</span></td></tr>
+<tr><td>Runtime Polyfills</td><td>8</td><td>System.Buffers, Memory, Text.Json, etc.</td><td><span class="badge badge-info">Required for AWS SDK</span></td></tr>
+<tr><td>Build/Tooling</td><td>4</td><td>WebGrease, Antlr, CodeDom, Newtonsoft</td><td><span class="badge badge-medium">Some Obsolete</span></td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-analysis.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Technical Debt -->
+<div class="tab-content" id="tab-technical-debt">
+<div class="card">
+<h2>⚠️ Technical Debt Assessment</h2>
+
+<div class="stats-grid">
+<div class="stat-card critical"><div class="stat-label">High Severity</div><div class="stat-value">7</div><div class="stat-description">Platform + Security issues</div></div>
+<div class="stat-card warning"><div class="stat-label">Medium Severity</div><div class="stat-value">8</div><div class="stat-description">Dependencies + Architecture</div></div>
+<div class="stat-card"><div class="stat-label">Low Severity</div><div class="stat-value">3</div><div class="stat-description">Code quality issues</div></div>
+<div class="stat-card"><div class="stat-label">Total Debt Items</div><div class="stat-value">18</div><div class="stat-description">Across all severity levels</div></div>
+</div>
+
+<h3>Technical Debt Inventory</h3>
+<table>
+<tr><th>Severity</th><th>Category</th><th>Issue</th><th>Impact</th></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Runtime</td><td>.NET Framework 4.8.1 — maintenance-only</td><td>Windows-only, no new features</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Framework</td><td>ASP.NET MVC 5 — legacy, no development</td><td>No middleware, no DI built-in</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>ORM</td><td>Entity Framework 6.5.1 — superseded</td><td>Missing perf features, no cross-platform</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Security</td><td>SHA-256 without salt</td><td>Rainbow table vulnerability</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Security</td><td>Open redirect in login</td><td>Phishing attack vector</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Security</td><td>Missing CSRF on APIs</td><td>Cross-site request forgery</td></tr>
+<tr><td><span class="badge badge-critical">High</span></td><td>Security</td><td>Information disclosure</td><td>Exception messages leaked to client</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Dependencies</td><td>Modernizr 2.8.3 (2014)</td><td>Unnecessary payload</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Dependencies</td><td>WebGrease 1.6.0 — obsolete</td><td>Unmaintained code</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Dependencies</td><td>Antlr 3.5.0.2 — very old</td><td>Transitive via WebGrease</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Dependencies</td><td>Leaflet.js 1.7.1 — outdated</td><td>Missing bug fixes</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Architecture</td><td>No dependency injection</td><td>Tight coupling, untestable</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Infrastructure</td><td>Windows-only Docker (~5GB)</td><td>Cost, limited orchestration</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Architecture</td><td>Mixed API patterns</td><td>JSON + HTML from same controllers</td></tr>
+<tr><td><span class="badge badge-medium">Medium</span></td><td>Infrastructure</td><td>SQL Server LocalDB</td><td>Dev-only, no HA/DR</td></tr>
+<tr><td><span class="badge badge-low">Low</span></td><td>Testing</td><td>Zero test coverage</td><td>High-risk changes</td></tr>
+<tr><td><span class="badge badge-low">Low</span></td><td>Code Quality</td><td>Duplicated password hashing</td><td>Maintenance burden</td></tr>
+<tr><td><span class="badge badge-low">Low</span></td><td>Code Quality</td><td>Inconsistent auth enforcement</td><td>Security gaps</td></tr>
+</table>
+
+<h3>Risk Matrix</h3>
+<table>
+<tr><th>Issue</th><th>Likelihood</th><th>Impact</th><th>Priority</th></tr>
+<tr><td>Password breach via rainbow table</td><td>High</td><td>Critical</td><td><span class="badge badge-critical">Immediate</span></td></tr>
+<tr><td>Open redirect phishing attack</td><td>High</td><td>High</td><td><span class="badge badge-critical">Immediate</span></td></tr>
+<tr><td>Platform EOL blocking features</td><td>Certain</td><td>High</td><td><span class="badge badge-high">High</span></td></tr>
+<tr><td>Production failure with no tests</td><td>Medium</td><td>High</td><td><span class="badge badge-medium">Medium</span></td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-technical-debt.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Diagrams -->
+<div class="tab-content" id="tab-diagrams">
+<div class="card">
+<h2>📈 System Diagrams</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Data Entities</div><div class="stat-value">3</div><div class="stat-description">Users, Unicorns, Rides</div></div>
+<div class="stat-card"><div class="stat-label">Controllers</div><div class="stat-value">4</div><div class="stat-description">Application components</div></div>
+<div class="stat-card"><div class="stat-label">External Services</div><div class="stat-value">3</div><div class="stat-description">Cognito, Location Maps, Location Places</div></div>
+<div class="stat-card"><div class="stat-label">Security Zones</div><div class="stat-value">3</div><div class="stat-description">Public, Protected, AWS Service</div></div>
+</div>
+
+<h3>Entity Relationship Diagram</h3>
+<pre class="mermaid">
+erDiagram
+    USERS ||--o{ RIDES : "requests"
+    UNICORNS ||--o{ RIDES : "assigned to"
+    USERS {
+        string Id PK
+        string Email
+        string Password
+    }
+    UNICORNS {
+        string Id PK
+        string Name
+        string Color
+        string Description
+        int Rating
+    }
+    RIDES {
+        string Id PK
+        string UnicornId FK
+        string UserId FK
+        datetime DateTime
+        float PickupLatitude
+        float PickupLongitude
+        string PickupAddress
+        float DestLatitude
+        float DestLongitude
+        string DestAddress
+        int NumberOfPassengers
+        string Status
+        int Rating
+    }
+</pre>
+
+<h3>User Login Sequence</h3>
+<pre class="mermaid">
+sequenceDiagram
+    actor User
+    participant Browser
+    participant UserCtrl as UserController
+    participant DB as Database
+    User->>Browser: Enter credentials
+    Browser->>UserCtrl: POST Login
+    UserCtrl->>DB: Find user by email
+    DB-->>UserCtrl: User record
+    UserCtrl->>UserCtrl: Compare password hash
+    UserCtrl-->>Browser: Set session redirect
+    Browser-->>User: Authenticated
+</pre>
+
+<h3>Ride Request Sequence</h3>
+<pre class="mermaid">
+sequenceDiagram
+    actor User
+    participant Browser
+    participant RideCtrl as RideController
+    participant DB as Database
+    participant AWS as AWS Location
+    User->>Browser: Click destination on map
+    Browser->>RideCtrl: POST CreateRide
+    RideCtrl->>RideCtrl: Check session
+    RideCtrl->>DB: Find user by email
+    DB-->>RideCtrl: User entity
+    RideCtrl->>DB: Random unicorn selection
+    DB-->>RideCtrl: Unicorn entity
+    RideCtrl->>DB: Save new ride
+    DB-->>RideCtrl: Saved
+    RideCtrl-->>Browser: JSON ride details
+</pre>
+
+<h3>Component Dependency Diagram</h3>
+<pre class="mermaid">
+flowchart TD
+    HC["HomeController"] --> V["Views (Razor)"]
+    UC["UserController"] --> DC["DefaultContext"]
+    RC["RideController"] --> DC
+    RC --> AWS["AWS SDK Client"]
+    UNC["UnicornController"] --> DC
+    DC --> UM["UserModel"]
+    DC --> UNM["UnicornModel"]
+    DC --> RM["RideModel"]
+    AWS --> COG["Cognito Identity"]
+    AWS --> LOC["Location Service"]
+    PF["Protected Filter"] -.-> UC
+    PF -.-> RC
+    PF -.-> UNC
+</pre>
+
+<h3>Application Data Flow</h3>
+<div class="flow-diagram">
+<div class="flow-node client">Browser</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">IIS / MVC Router</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Controllers</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">EF6 / SQL Server</div>
+</div>
+
+<p style="margin-top:1.5rem"><a href="details-diagrams.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Reference -->
+<div class="tab-content" id="tab-reference">
+<div class="card">
+<h2>📚 Reference &amp; Data Models</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Database Tables</div><div class="stat-value">3</div><div class="stat-description">Users, Unicorns, Rides</div></div>
+<div class="stat-card"><div class="stat-label">Total Columns</div><div class="stat-value">23</div><div class="stat-description">Across all tables</div></div>
+<div class="stat-card"><div class="stat-label">API Endpoints</div><div class="stat-value">14</div><div class="stat-description">10 MVC + 3 JSON + 1 binary</div></div>
+<div class="stat-card"><div class="stat-label">Modules</div><div class="stat-value">6</div><div class="stat-description">Auth, Ride, Fleet, Data, Config, Presentation</div></div>
+<div class="stat-card"><div class="stat-label">Namespaces</div><div class="stat-value">5</div><div class="stat-description">Controllers, Models, Context, Decorators, Migrations</div></div>
+<div class="stat-card"><div class="stat-label">Foreign Keys</div><div class="stat-value">2</div><div class="stat-description">Rides → Users, Rides → Unicorns</div></div>
+</div>
+
+<h3>Data Model Summary</h3>
+<table>
+<tr><th>Entity</th><th>Table</th><th>Columns</th><th>Key Relationships</th></tr>
+<tr><td>UserModel</td><td>Users</td><td>3 (Id, Email, Password)</td><td>1:N with Rides</td></tr>
+<tr><td>UnicornModel</td><td>Unicorns</td><td>5 (Id, Name, Color, Description, Rating)</td><td>1:N with Rides</td></tr>
+<tr><td>RideModel</td><td>Rides</td><td>15 (incl. Location complex types)</td><td>FK to Users, FK to Unicorns</td></tr>
+</table>
+
+<h3>JSON API Contracts</h3>
+<table>
+<tr><th>Endpoint</th><th>Method</th><th>Auth</th><th>Request</th><th>Response</th></tr>
+<tr><td>/Ride/CreateRide</td><td>POST</td><td>Session</td><td>pickupLat, pickupLng, destLat, destLng, passengers</td><td>JSON: rideId, unicornName, unicornColor</td></tr>
+<tr><td>/Ride/ReverseGeocode</td><td>POST</td><td>None</td><td>lat, lng</td><td>JSON: success, address</td></tr>
+<tr><td>/Ride/GetMapTile/z/x/y</td><td>GET</td><td>None</td><td>URL path params</td><td>image/png binary</td></tr>
+</table>
+
+<h3>Module Organization</h3>
+<table>
+<tr><th>Module</th><th>Files</th><th>External Dependencies</th></tr>
+<tr><td>Authentication</td><td>UserController.cs, Protected.cs</td><td>SHA256</td></tr>
+<tr><td>Ride Management</td><td>RideController.cs, RideModel.cs</td><td>AWS SDK (Location, Cognito)</td></tr>
+<tr><td>Fleet Management</td><td>UnicornController.cs, UnicornModel.cs</td><td>None beyond EF6</td></tr>
+<tr><td>Data Access</td><td>DefaultContext.cs, all Models</td><td>Entity Framework 6</td></tr>
+<tr><td>Configuration</td><td>BundleConfig, FilterConfig, RouteConfig, Global.asax</td><td>ASP.NET MVC</td></tr>
+<tr><td>Presentation</td><td>12 Razor views</td><td>Bootstrap, jQuery, Leaflet.js</td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-reference.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Specialized -->
+<div class="tab-content" id="tab-specialized">
+<div class="card">
+<h2>🔧 Specialized — AWS Integration &amp; Infrastructure</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">AWS Services</div><div class="stat-value">3</div><div class="stat-description">Cognito, Location Maps, Location Places</div></div>
+<div class="stat-card"><div class="stat-label">Database Patterns</div><div class="stat-value">4</div><div class="stat-description">Lookup, Random Select, Eager Load, CRUD</div></div>
+<div class="stat-card"><div class="stat-label">Config Settings</div><div class="stat-value">4</div><div class="stat-description">Region, Cognito Pool, Map Name, Place Index</div></div>
+<div class="stat-card"><div class="stat-label">Docker Image Size</div><div class="stat-value">~5GB</div><div class="stat-description">Windows Server Core base</div></div>
+<div class="stat-card warning"><div class="stat-label">Placeholder Configs</div><div class="stat-value">3</div><div class="stat-description">AWS values not set for production</div></div>
+</div>
+
+<h3>AWS Integration Architecture</h3>
+<table>
+<tr><th>Service</th><th>SDK Package</th><th>Usage</th><th>Configuration</th></tr>
+<tr><td>Cognito Identity</td><td>AWSSDK.CognitoIdentity 4.0.0.15</td><td>Temporary credentials for Location access</td><td>Identity Pool ID in Web.config</td></tr>
+<tr><td>Location Service - Maps</td><td>AWSSDK.LocationService 4.0.1</td><td>Map tile imagery via server proxy</td><td>Map Name in Web.config</td></tr>
+<tr><td>Location Service - Places</td><td>AWSSDK.LocationService 4.0.1</td><td>Reverse geocoding (coords → address)</td><td>Place Index in Web.config</td></tr>
+<tr><td>STS</td><td>AWSSDK.SecurityToken 4.0.1.6</td><td>Implicit via Cognito credential exchange</td><td>Automatic</td></tr>
+</table>
+
+<h3>Database Query Patterns</h3>
+<div class="collapsible">
+<div class="collapsible-header">User Lookup by Email (Used in Login + Ride creation)</div>
+<div class="collapsible-content">
+<pre>db.Users.FirstOrDefault(u => u.Email == userEmail)
+// Generates: SELECT TOP(1) * FROM Users WHERE Email = @p0</pre>
+</div>
+</div>
+<div class="collapsible">
+<div class="collapsible-header">Random Unicorn Selection (Race condition risk)</div>
+<div class="collapsible-content">
+<pre>var skip = rand.Next(0, db.Unicorns.Count());
+var unicorn = db.Unicorns.OrderBy(x => Guid.NewGuid()).Skip(skip).FirstOrDefault();
+// Issue: Two DB round-trips, count may change between queries</pre>
+</div>
+</div>
+<div class="collapsible">
+<div class="collapsible-header">Ride History with Eager Loading</div>
+<div class="collapsible-content">
+<pre>db.Rides.Include(r => r.Unicorn).Include(r => r.User)
+    .Where(r => r.UserId == user.Id).OrderBy(r => r.DateTime).ToList();</pre>
+</div>
+</div>
+
+<h3>Infrastructure Details</h3>
+<table>
+<tr><th>Aspect</th><th>Current</th><th>Issue</th></tr>
+<tr><td>Base Image</td><td>mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019</td><td>~5GB, Windows hosts only</td></tr>
+<tr><td>Web Server</td><td>IIS (built-in)</td><td>Windows-only</td></tr>
+<tr><td>Database</td><td>SQL Server LocalDB (in-container)</td><td>Single-user, not production-ready</td></tr>
+<tr><td>NuGet</td><td>Committed binaries in references/</td><td>Bloated repo, manual updates</td></tr>
+</table>
+
+<p style="margin-top:1.5rem"><a href="details-specialized.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Migration -->
+<div class="tab-content" id="tab-migration">
+<div class="card">
+<h2>🚀 Migration Planning</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Migration Phases</div><div class="stat-value">6</div><div class="stat-description">Foundation → Infra → Cross-cutting → Controllers → Views → Deploy</div></div>
+<div class="stat-card"><div class="stat-label">Components to Migrate</div><div class="stat-value">14</div><div class="stat-description">Models, Context, Config, Auth, Routes, Controllers, Views, Docker</div></div>
+<div class="stat-card"><div class="stat-label">Test Cases Needed</div><div class="stat-value">30</div><div class="stat-description">Unit + Integration specifications</div></div>
+<div class="stat-card"><div class="stat-label">Validation Gates</div><div class="stat-value">4</div><div class="stat-description">Functional, Security, Performance, Deployment</div></div>
+<div class="stat-card"><div class="stat-label">Critical Path Depth</div><div class="stat-value">6</div><div class="stat-description">Models → Context → Config → Auth → Controllers → Views</div></div>
+<div class="stat-card warning"><div class="stat-label">Circular Dependencies</div><div class="stat-value">0</div><div class="stat-description">Clean dependency graph</div></div>
+</div>
+
+<h3>Critical Path Visualization</h3>
+<div class="flow-diagram">
+<div class="flow-node database">Models</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">DbContext</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Configuration</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Authentication</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Controllers</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node client">Views</div>
+</div>
+
+<h3>Migration Phases</h3>
+<table>
+<tr><th>Phase</th><th>Components</th><th>Priority</th><th>Description</th></tr>
+<tr><td>1. Foundation</td><td>Models (3), DbContext (1)</td><td><span class="badge badge-critical">Critical Path</span></td><td>Port entities to EF Core, update annotations</td></tr>
+<tr><td>2. Infrastructure</td><td>Web.config → appsettings.json, Program.cs</td><td><span class="badge badge-high">High</span></td><td>Replace XML config with JSON, build new startup</td></tr>
+<tr><td>3. Cross-Cutting</td><td>Auth middleware, Routing</td><td><span class="badge badge-high">High</span></td><td>Replace [Protected] with [Authorize], add DI</td></tr>
+<tr><td>4. Controllers</td><td>Home, Unicorn, User, Ride (complexity order)</td><td><span class="badge badge-medium">Medium</span></td><td>Port actions to ASP.NET Core patterns</td></tr>
+<tr><td>5. Views</td><td>Layout, 12 Razor templates</td><td><span class="badge badge-medium">Medium</span></td><td>Update tag helpers, remove @Styles.Render</td></tr>
+<tr><td>6. Deployment</td><td>Dockerfile, Database</td><td><span class="badge badge-info">Final</span></td><td>Switch to Linux image, configure prod DB</td></tr>
+</table>
+
+<h3>Test Specifications by Component</h3>
+<table>
+<tr><th>Component</th><th>Test Cases</th><th>Critical Checks</th></tr>
+<tr><td>UserController</td><td>8</td><td>Login success/failure, password hashing, session management</td></tr>
+<tr><td>RideController</td><td>10</td><td>Auth checks, ride creation, geocoding, map tiles</td></tr>
+<tr><td>UnicornController</td><td>8</td><td>CRUD operations, auth enforcement</td></tr>
+<tr><td>Protected Filter</td><td>2</td><td>Redirect on no session, allow on valid session</td></tr>
+<tr><td>Integration</td><td>4</td><td>Full registration flow, ride request, unicorn CRUD, seed data</td></tr>
+</table>
+
+<h3>Go / No-Go Checkpoints</h3>
+<div class="alert alert-info"><strong>Checkpoint 1 — Data Integrity:</strong> All existing user accounts, ride history, and unicorn data are preserved without loss after migration. Database schema produces equivalent results.</div>
+<div class="alert alert-info"><strong>Checkpoint 2 — Feature Parity:</strong> Users can register, login, request rides, view history, and manage unicorns identically to the current system. All URLs return same responses.</div>
+<div class="alert alert-info"><strong>Checkpoint 3 — Security Baseline:</strong> Password hashing upgraded to bcrypt, open redirect fixed, CSRF enabled on all endpoints, no information disclosure.</div>
+<div class="alert alert-success"><strong>Checkpoint 4 — Production Ready:</strong> Application deploys on Linux containers under 200MB, connects to managed database, health checks pass, HTTPS enforced, monitoring active.</div>
+
+<p style="margin-top:1.5rem"><a href="details-migration.html" class="back-link">📄 View full details →</a></p>
+</div>
+</div>
+
+<!-- TAB: Recommendations & Roadmap -->
+<div class="tab-content" id="tab-recommendations">
+<div class="card">
+<h2>💡 Recommendations &amp; Roadmap</h2>
+
+<h3>Recommended AWS Target Architecture</h3>
+<div class="aws-diagram">
+<div class="diagram-title">Target Architecture — us-east-1</div>
+<div class="aws-region" data-label="us-east-1">
+<div class="diagram-container" style="border:none;padding:1rem;margin:0">
+<div class="diagram-layers">
+<div class="diagram-layer layer-presentation"><div class="layer-label">Ingress</div><div class="layer-components"><span class="component">Amazon CloudFront</span><span class="component">Application Load Balancer</span><span class="component">AWS WAF</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-business"><div class="layer-label">Application / Processing</div><div class="layer-components"><span class="component">Amazon ECS Fargate</span><span class="component">ASP.NET Core 8</span><span class="component">Amazon Cognito (User Auth)</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer layer-data"><div class="layer-label">Data / Storage</div><div class="layer-components"><span class="component">Amazon Aurora PostgreSQL</span><span class="component">Amazon S3 (Static Assets)</span><span class="component">Amazon Location Service</span></div></div>
+<div class="diagram-arrow">⬇</div>
+<div class="diagram-layer" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);border:1px solid #f9a8d4"><div class="layer-label">Security / Operations</div><div class="layer-components"><span class="component">AWS Secrets Manager</span><span class="component">Amazon CloudWatch</span><span class="component">AWS X-Ray</span></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<h3>Component Mapping</h3>
+<table>
+<tr><th>Current</th><th>AWS Target</th><th>Rationale</th></tr>
+<tr><td>.NET Framework 4.8.1 / IIS</td><td>ASP.NET Core 8 on ECS Fargate</td><td>Cross-platform, serverless containers, auto-scaling</td></tr>
+<tr><td>SQL Server LocalDB</td><td>Amazon Aurora PostgreSQL Serverless v2</td><td>Managed, auto-scaling, cost-effective for variable workloads</td></tr>
+<tr><td>Custom session auth</td><td>Amazon Cognito User Pools</td><td>Industry-standard auth with MFA, password policies, OAuth2</td></tr>
+<tr><td>Windows Docker (~5GB)</td><td>Linux container (~200MB)</td><td>25x smaller, faster deploys, lower cost</td></tr>
+<tr><td>Static files in IIS</td><td>Amazon S3 + CloudFront</td><td>Global CDN, reduced server load</td></tr>
+<tr><td>No monitoring</td><td>CloudWatch + X-Ray</td><td>Observability, distributed tracing</td></tr>
+</table>
+
+<h3>Remediation Priorities</h3>
+<h4>Priority 1 — Immediate (Before Migration)</h4>
+<ul>
+<li><strong>Fix unsalted password hashing</strong> — Replace SHA-256 with bcrypt/PBKDF2 with per-user salt</li>
+<li><strong>Fix open redirect</strong> — Validate redirect URL is local using Url.IsLocalUrl()</li>
+<li><strong>Add CSRF to API endpoints</strong> — Protect CreateRide and ReverseGeocode</li>
+<li><strong>Remove hardcoded credentials</strong> — Externalize seed data configuration</li>
+</ul>
+<h4>Priority 2 — During Migration</h4>
+<ul>
+<li><strong>Migrate to .NET 8</strong> — Port all code to ASP.NET Core with DI, Kestrel, middleware</li>
+<li><strong>Replace EF6 with EF Core</strong> — Migrate DbContext, models, recreate migrations</li>
+<li><strong>Implement proper auth</strong> — Integrate Amazon Cognito User Pools for user authentication</li>
+<li><strong>Add test suite</strong> — Create xUnit project with 80%+ coverage target</li>
+</ul>
+<h4>Priority 3 — Post-Migration</h4>
+<ul>
+<li><strong>Remove obsolete dependencies</strong> — Drop Modernizr, WebGrease, Antlr</li>
+<li><strong>Separate API layer</strong> — Dedicated API controllers for JSON endpoints</li>
+<li><strong>Add CDN for static assets</strong> — CloudFront + S3 for CSS/JS/images</li>
+<li><strong>Implement CI/CD</strong> — Automated testing and deployment pipeline</li>
+</ul>
+
+<h3>Migration Risk Assessment</h3>
+<table>
+<tr><th>Risk</th><th>Severity</th><th>Likelihood</th><th>Mitigation</th></tr>
+<tr><td>Data loss during schema migration</td><td><span class="badge badge-critical">Critical</span></td><td>Low</td><td>Full backup, parallel run, validation scripts</td></tr>
+<tr><td>EF Core query behavior differences</td><td><span class="badge badge-medium">Medium</span></td><td>Medium</td><td>Comprehensive integration tests, query logging</td></tr>
+<tr><td>AWS credential flow changes</td><td><span class="badge badge-medium">Medium</span></td><td>Low</td><td>SDK v4 supports .NET 8 — minimal changes</td></tr>
+<tr><td>Session state migration</td><td><span class="badge badge-high">High</span></td><td>Medium</td><td>Move to Cognito tokens — no server-side sessions</td></tr>
+<tr><td>Extended downtime during cutover</td><td><span class="badge badge-medium">Medium</span></td><td>Low</td><td>Blue/green deployment with ALB traffic shifting</td></tr>
+</table>
+
+<h3>Investment Summary</h3>
+<div class="stats-grid">
+<div class="stat-card critical"><div class="stat-label">Current Annual Cost</div><div class="stat-value">~$45K–$65K</div><div class="stat-description">Windows licensing ($15K) + developer premium ($20K) + infrastructure ($8K) + security risk ($5K–$20K)</div></div>
+<div class="stat-card success"><div class="stat-label">Post-Migration Annual Cost</div><div class="stat-value">~$12K–$18K</div><div class="stat-description">AWS infrastructure + maintenance on Linux</div></div>
+<div class="stat-card warning"><div class="stat-label">Migration Investment</div><div class="stat-value">~$80K–$120K</div><div class="stat-description">4–6 months • 2–3 engineers</div></div>
+<div class="stat-card success"><div class="stat-label">Estimated Payback</div><div class="stat-value">18–30 months</div><div class="stat-description">Based on annual savings of ~$35K–$47K</div></div>
+</div>
+
+<div class="alert alert-danger"><strong>Cost of Inaction:</strong>
+<ul style="margin-top:.5rem">
+<li><strong>Security Incident</strong> — Unsalted passwords and open redirect create active breach vectors; a single incident could cost $100K+ in remediation and reputation damage</li>
+<li><strong>Developer Scarcity</strong> — .NET Framework developers increasingly scarce and expensive; hiring costs rising 15–20% year-over-year</li>
+<li><strong>Platform Collapse</strong> — Windows Server Core LTSC 2019 approaching end of mainstream support; forced migration under time pressure costs 2–3x more</li>
+<li><strong>Feature Velocity</strong> — Cannot adopt modern patterns (serverless, containers, microservices) on current platform; competitors gain advantage</li>
+</ul>
+</div>
+
+<h3>Recommended Approach: ASP.NET Core 8 on AWS</h3>
+<div class="alert alert-success"><strong>Recommendation:</strong> Migrate to ASP.NET Core 8 running on Amazon ECS Fargate with Aurora PostgreSQL. The application is small (~600 LOC) making a clean migration feasible within 4–6 months with a small team.</div>
+<table>
+<tr><th>Option</th><th>Fit</th><th>Rationale</th></tr>
+<tr><td>ASP.NET Core 8 + ECS Fargate</td><td><span class="badge badge-low">Recommended ✓</span></td><td>Preserves MVC patterns, cross-platform, managed containers, auto-scaling</td></tr>
+<tr><td>Serverless (Lambda + API Gateway)</td><td><span class="badge badge-info">Alternative</span></td><td>Cost-efficient for low traffic but requires architectural restructuring</td></tr>
+<tr><td>Remain on .NET Framework</td><td><span class="badge badge-critical">Not Recommended</span></td><td>Increasing risk, cost, and talent scarcity with no path forward</td></tr>
+</table>
+
+<h3>Step-by-Step Migration Plan</h3>
+<h4>Phase 0: Security Hardening (2–3 weeks)</h4>
+<table>
+<tr><th>Step</th><th>Action</th><th>Duration</th><th>Output</th></tr>
+<tr><td>0.1</td><td>Replace SHA-256 with bcrypt</td><td>3 days</td><td>Secure password storage</td></tr>
+<tr><td>0.2</td><td>Fix open redirect + add CSRF</td><td>2 days</td><td>Vulnerability remediation</td></tr>
+<tr><td>0.3</td><td>Remove hardcoded credentials</td><td>1 day</td><td>Clean seed data</td></tr>
+<tr><td>0.4</td><td>Add basic test suite</td><td>1 week</td><td>Regression safety net</td></tr>
+</table>
+
+<h4>Phase 1: Platform Migration (6–8 weeks)</h4>
+<table>
+<tr><th>Step</th><th>Action</th><th>Duration</th><th>Output</th></tr>
+<tr><td>1.1</td><td>Port Models + DbContext to EF Core 8</td><td>1 week</td><td>Data layer on .NET 8</td></tr>
+<tr><td>1.2</td><td>Create Program.cs, appsettings.json, DI setup</td><td>1 week</td><td>Application bootstrap</td></tr>
+<tr><td>1.3</td><td>Replace [Protected] with ASP.NET Core auth</td><td>1 week</td><td>Standard auth middleware</td></tr>
+<tr><td>1.4</td><td>Migrate controllers (Home → Unicorn → User → Ride)</td><td>2–3 weeks</td><td>All endpoints functional</td></tr>
+<tr><td>1.5</td><td>Update Razor views with tag helpers</td><td>1 week</td><td>UI parity</td></tr>
+</table>
+
+<h4>Phase 2: Cloud-Native (3–4 weeks)</h4>
+<table>
+<tr><th>Step</th><th>Action</th><th>Duration</th><th>Output</th></tr>
+<tr><td>2.1</td><td>Linux Dockerfile + ECS Fargate deployment</td><td>1 week</td><td>~200MB container running</td></tr>
+<tr><td>2.2</td><td>Aurora PostgreSQL + data migration</td><td>1 week</td><td>Production database</td></tr>
+<tr><td>2.3</td><td>Cognito User Pools integration</td><td>1 week</td><td>Managed auth</td></tr>
+<tr><td>2.4</td><td>CloudFront + S3 for static assets</td><td>3 days</td><td>CDN delivery</td></tr>
+</table>
+
+<h4>Phase 3: Validation &amp; Cutover (2–3 weeks)</h4>
+<table>
+<tr><th>Step</th><th>Action</th><th>Duration</th><th>Output</th></tr>
+<tr><td>3.1</td><td>Integration testing + load testing</td><td>1 week</td><td>Validated system</td></tr>
+<tr><td>3.2</td><td>Blue/green deployment + monitoring</td><td>1 week</td><td>Production cutover</td></tr>
+<tr><td>3.3</td><td>Decommission old infrastructure</td><td>3 days</td><td>Cost savings begin</td></tr>
+</table>
+
+<h3>Timeline Summary</h3>
+<div class="flow-diagram">
+<div class="flow-node client">Phase 0<br>Security<br>2–3 wks</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Phase 1<br>Platform<br>6–8 wks</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node service">Phase 2<br>Cloud-Native<br>3–4 wks</div>
+<span class="flow-arrow">→</span>
+<div class="flow-node database">Phase 3<br>Validation<br>2–3 wks</div>
+</div>
+<div class="alert alert-info"><strong>Total: ~4–6 months</strong> — Team: 2 full-stack engineers + 1 DevOps/cloud engineer (part-time).</div>
+
+<h3>Estimated Migration Investment</h3>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">Team Size</div><div class="stat-value">2–3</div><div class="stat-description">2 full-stack + 1 DevOps (part-time)</div></div>
+<div class="stat-card warning"><div class="stat-label">Duration</div><div class="stat-value">4–6 months</div><div class="stat-description">Including validation</div></div>
+<div class="stat-card"><div class="stat-label">Estimated Cost</div><div class="stat-value">~$80K–$120K</div><div class="stat-description">Team cost at blended rate</div></div>
+</div>
+
+<h3>AWS Transform Custom + Kiro — Feasibility</h3>
+<div class="alert alert-info"><strong>This report was generated by AWS Transform Custom (comprehensive-codebase-analysis).</strong> The migration can be executed using Kiro's agent-assisted development with specs, hooks, and steering for each phase.</div>
+<table>
+<tr><th>Approach</th><th>Status</th><th>Description</th></tr>
+<tr><td>ATX Comprehensive Analysis</td><td><span class="badge badge-low">Completed ✓</span></td><td>This report — full codebase analysis with migration planning</td></tr>
+<tr><td>ATX Managed Transformation (.NET Modernization)</td><td><span class="badge badge-info">Available</span></td><td>Automated .NET Framework → .NET 8 migration via ATX tooling</td></tr>
+<tr><td>Kiro-Assisted Migration</td><td><span class="badge badge-low">Recommended ✓</span></td><td>Use Kiro specs + agent to execute each migration phase with AI-assisted coding</td></tr>
+</table>
+
+<h3>Recommended Next Steps</h3>
+<ol>
+<li><strong>Fix critical security vulnerabilities immediately</strong> — The 4 high-severity security issues should be patched on the current platform within 1–2 weeks, before migration begins.</li>
+<li><strong>Set up Kiro workspace with migration specs</strong> — Create phase-by-phase specifications in Kiro for the .NET 8 migration, using this analysis as the source of truth for component dependencies and validation criteria.</li>
+<li><strong>Provision target AWS infrastructure</strong> — Create ECS cluster, Aurora PostgreSQL instance, Cognito User Pool, and CloudFront distribution in a staging environment for iterative migration testing.</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+<p>Wild Rydes — Generated 2026-06-26</p>
+<p>9 areas • 34 input files • 9 detail pages</p>
+</div>
+
+<script src="mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:false,theme:'default',securityLevel:'loose'});</script>
+
+<script>
+(function() {
+  function renderMermaid(container) {
+    var blocks = container.querySelectorAll('pre.mermaid:not([data-processed])');
+    if (blocks.length > 0) {
+      mermaid.run({nodes: blocks});
+    }
+  }
+  document.querySelectorAll('.nav-tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.getAttribute('data-tab-id'));
+      if (target) {
+        target.classList.add('active');
+        renderMermaid(target);
+      }
+      history.replaceState(null, '', '#' + btn.getAttribute('data-tab-id'));
+    });
+  });
+  function activateFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash) {
+      var btn = document.querySelector('.nav-tab[data-tab-id="' + hash + '"]');
+      if (btn) btn.click();
+    }
+  }
+  activateFromHash();
+  window.addEventListener('hashchange', activateFromHash);
+  document.querySelectorAll('.collapsible-header').forEach(function(h) {
+    function toggle() {
+      h.classList.toggle('expanded');
+      h.nextElementSibling.classList.toggle('show');
+    }
+    h.addEventListener('click', toggle);
+    h.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+  var activeTab = document.querySelector('.tab-content.active');
+  if (activeTab) renderMermaid(activeTab);
+})();
+</script>
+
+</body>
+</html>

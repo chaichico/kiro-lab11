@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migration — Wild Rydes Detail</title>
+  <style>
+/*
+ * AWS Transform Assessment Report — CSS Styles (Single Source of Truth)
+ * 
+ * Complete CSS for assessment reports (index.html + details-*.html).
+ * Include the contents of this file in a <style> tag in each generated HTML file.
+ * Do NOT link to this file — each HTML must be self-contained with inline CSS.
+ */
+
+/* Skip Link (Accessibility) */
+.skip-link{position:absolute;top:-100%;left:1rem;background:var(--accent);color:#fff;padding:.75rem 1.5rem;border-radius:0 0 6px 6px;z-index:2000;font-weight:600;text-decoration:none;transition:top .2s}
+.skip-link:focus{top:0}
+
+:root{--primary:#232f3e;--secondary:#ff9900;--accent:#146eb4;--success:#1d8102;--warning:#ff9900;--danger:#d13212;--bg:#f8f9fa;--card:#fff;--text:#16191f;--text2:#545b64;--border:#d5dbdb;--code-bg:#f4f4f4;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--mono:'SF Mono','Fira Code','Courier New',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);line-height:1.6;color:var(--text);background:var(--bg)}
+
+/* Header */
+.header{background:linear-gradient(135deg,var(--primary),#1a242f);color:#fff;padding:2rem 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.header-content{max-width:1400px;margin:0 auto;padding:0 2rem}
+.header-logo{display:flex;align-items:center;gap:1.5rem}
+.aws-logo{height:48px;width:auto;filter:brightness(0) invert(1)}
+.header h1{font-size:2.5rem;font-weight:300;margin-bottom:.5rem}
+.header .subtitle{font-size:1.1rem;opacity:.9}
+.critical-banner{background:linear-gradient(135deg,var(--danger),#a82a0c);color:#fff;padding:1.25rem 2rem;text-align:center;font-weight:500}
+.critical-banner strong{font-size:1.2rem;display:block;margin-bottom:.25rem}
+
+/* Container & Navigation */
+.container{max-width:1400px;margin:0 auto;padding:2rem}
+.page-nav{background:var(--card);border-bottom:1px solid var(--border);padding:.5rem 2rem;display:flex;gap:.25rem;flex-wrap:wrap;max-width:1400px;margin:0 auto}
+.page-nav a{padding:.5rem 1rem;color:var(--text2);text-decoration:none;font-size:.85rem;border-radius:4px;transition:all .2s}
+.page-nav a:hover{background:var(--bg);color:var(--text)}
+.page-nav a.current{background:var(--accent);color:#fff;font-weight:600}
+
+/* Tab Navigation */
+.nav-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap;background:#fff;padding:1rem;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.nav-tab{padding:.75rem 1.5rem;background:var(--bg);border:2px solid var(--border);border-radius:6px;cursor:pointer;transition:all .3s;font-weight:500;color:var(--text);font-size:.9rem}
+.nav-tab:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
+.nav-tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.nav-tab.active{background:var(--secondary);color:#fff;border-color:var(--secondary)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:2rem;margin-bottom:2rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card h2{color:var(--primary);margin-bottom:1.5rem;font-size:1.8rem;border-bottom:3px solid var(--secondary);padding-bottom:.5rem}
+.card h3{color:var(--accent);margin:1.5rem 0 1rem;font-size:1.4rem}
+.card h4{color:var(--text);margin:1rem 0 .5rem;font-size:1.1rem}
+
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin:2rem 0}
+.stat-card{background:linear-gradient(135deg,var(--card),#f0f3f5);padding:1.5rem;border-radius:8px;border-left:4px solid var(--accent);box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.stat-card.critical{border-left-color:var(--danger);background:linear-gradient(135deg,#fff5f5,#ffe6e6)}
+.stat-card.warning{border-left-color:var(--warning);background:linear-gradient(135deg,#fffbf0,#fff4d6)}
+.stat-card.success{border-left-color:var(--success);background:linear-gradient(135deg,#f0fff4,#d9f7e6)}
+.stat-label{font-size:.9rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.stat-value{font-size:2rem;font-weight:700}
+.stat-description{font-size:.85rem;color:var(--text2);margin-top:.5rem}
+
+/* Badges */
+.badge{display:inline-block;padding:.25rem .75rem;border-radius:12px;font-size:.85rem;font-weight:600;text-transform:uppercase}
+.badge-critical{background:var(--danger);color:#fff}
+.badge-high{background:#ea580c;color:#fff}
+.badge-medium{background:#ca8a04;color:#fff}
+.badge-low{background:var(--success);color:#fff}
+.badge-info{background:var(--accent);color:#fff}
+
+/* Tables (responsive) */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+th{background:var(--primary);color:#fff;padding:1rem;text-align:left;font-weight:600}
+td{padding:.75rem 1rem;border-bottom:1px solid var(--border)}
+tr:hover{background:var(--bg)}
+
+/* Code */
+pre{background:var(--code-bg);color:var(--text);padding:1rem;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:.85rem;border-left:4px solid var(--accent);margin:1rem 0;white-space:pre-wrap}
+code{font-family:var(--mono);font-size:.9em}
+:not(pre)>code{background:#f1f5f9;padding:.1rem .35rem;border-radius:3px;color:#be185d}
+
+/* Alerts */
+.alert{padding:1rem 1.5rem;border-radius:6px;margin:1.5rem 0;border-left:4px solid}
+.alert-danger{background:#fff5f5;border-left-color:var(--danger);color:#721c24}
+.alert-warning{background:#fffbf0;border-left-color:var(--warning);color:#856404}
+.alert-info{background:#e7f3ff;border-left-color:var(--accent);color:#004085}
+.alert-success{background:#f0fff4;border-left-color:var(--success);color:#155724}
+
+/* Diagrams */
+.diagram-container{background:#fff;border:2px solid var(--border);border-radius:12px;padding:2rem;margin:1.5rem 0}
+.diagram-title{font-size:1.1rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:1px}
+.diagram-layers{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.diagram-layer{width:100%;max-width:600px;padding:1rem 1.5rem;border-radius:8px;text-align:center}
+.layer-label{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem}
+.layer-components{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.component{background:rgba(255,255,255,.8);padding:.3rem .8rem;border-radius:4px;font-size:.85rem;border:1px solid rgba(0,0,0,.1)}
+.layer-presentation{background:linear-gradient(135deg,#e7f3ff,#cce5ff);border:1px solid #99caff}
+.layer-business{background:linear-gradient(135deg,#fff4e6,#ffe8cc);border:1px solid #ffcc80}
+.layer-data{background:linear-gradient(135deg,#e6f9e6,#ccf2cc);border:1px solid #80d980}
+.diagram-arrow{font-size:1.5rem;color:var(--text2);text-align:center}
+
+/* Flow Diagrams */
+.flow-diagram{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:center;padding:1.5rem;background:#fff;border:2px solid var(--border);border-radius:12px;margin:1.5rem 0}
+.flow-node{padding:.75rem 1.25rem;border-radius:8px;font-weight:600;font-size:.85rem;text-align:center;min-width:100px}
+.flow-node.client{background:#e7f3ff;border:2px solid #146eb4;color:#146eb4}
+.flow-node.service{background:#fff4e6;border:2px solid #ff9900;color:#232f3e}
+.flow-node.database{background:#e6f9e6;border:2px solid #1d8102;color:#1d8102}
+.flow-node.external{background:#f5f5f5;border:2px dashed #545b64;color:#545b64}
+.flow-arrow{font-size:1.25rem;color:var(--text2)}
+
+/* AWS Diagrams */
+.aws-diagram{background:linear-gradient(135deg,#fafbfc,#f0f3f5);border:2px solid var(--border);border-radius:12px;padding:2rem;margin:1.5rem 0}
+.aws-diagram .aws-region{border:2px dashed #146eb4;border-radius:8px;padding:1.5rem;margin:1rem 0;position:relative}
+.aws-diagram .aws-region::before{content:attr(data-label);position:absolute;top:-.75rem;left:1rem;background:#fff;padding:0 .5rem;font-size:.75rem;color:#146eb4;font-weight:600}
+.aws-diagram .aws-service{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:6px;margin:.25rem;font-size:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.aws-diagram .aws-service .icon{font-size:1.25rem}
+
+/* Collapsible Sections */
+.collapsible{margin-bottom:1rem;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.collapsible-header{padding:.75rem 1rem;background:#f8fafc;cursor:pointer;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.collapsible-header:hover{background:#f1f5f9}
+.collapsible-header::after{content:'▶';font-size:.7rem;transition:transform .2s}
+.collapsible-header.expanded::after{transform:rotate(90deg)}
+.collapsible-content{display:none;padding:1.5rem;border-top:1px solid var(--border)}
+.collapsible-content.show{display:block}
+
+/* Links & Buttons */
+.back-link{color:var(--accent);text-decoration:none;font-weight:600;display:inline-block;margin-bottom:1.5rem}
+.back-link:hover{text-decoration:underline}
+.btn{display:inline-block;padding:.75rem 1.5rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;text-decoration:none;border-radius:6px;font-weight:600;transition:opacity .3s}
+.btn:hover{opacity:.9}
+
+/* Lists */
+ul,ol{margin:1rem 0 1rem 2rem}
+li{margin:.5rem 0}
+
+/* Footer */
+.footer{background:var(--primary);color:#fff;text-align:center;padding:2rem;margin-top:4rem}
+.footer p{opacity:.8}
+
+/* Responsive */
+@media(max-width:768px){.nav-tabs{flex-direction:column}.stats-grid{grid-template-columns:1fr}.header h1{font-size:1.8rem}.page-nav{flex-direction:column}.readiness-score{flex-direction:column;text-align:center}.flow-diagram{gap:.25rem}.flow-node{min-width:80px;font-size:.75rem;padding:.5rem .75rem}}
+
+/* Print */
+@media print{.nav-tabs,.page-nav{display:none}.tab-content{display:block!important}.collapsible-content{display:block!important}pre{white-space:pre-wrap}
+.tab-content:not(#tab-overview){page-break-before:always}
+:root{--primary:#232f3e;--bg:#fff;--card:#fff;--text:#16191f;--text2:#545b64;--border:#d5dbdb;--code-bg:#f4f4f4}
+}
+
+/* Readiness Score */
+.readiness-score{display:flex;align-items:center;gap:1.5rem;padding:1.5rem;border-radius:12px;margin:1.5rem 0}
+.readiness-score.low{background:linear-gradient(135deg,#fff5f5,#ffe6e6);border:2px solid var(--danger)}
+.readiness-score.medium{background:linear-gradient(135deg,#fffbf0,#fff4d6);border:2px solid var(--warning)}
+.readiness-score.high{background:linear-gradient(135deg,#f0fff4,#d9f7e6);border:2px solid var(--success)}
+.readiness-score .score-circle{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.readiness-score .score-inner{width:80px;height:80px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700}
+.readiness-score .score-details{flex:1}
+.readiness-score .score-details h4{margin:0 0 .5rem;font-size:1.2rem}
+.readiness-score .score-details p{margin:0;font-size:.9rem;color:var(--text2)}
+
+/* Tree Diagram */
+.tree-diagram{font-family:var(--mono);font-size:.85rem;line-height:1.8;background:var(--code-bg);padding:1.5rem;border-radius:8px;border-left:4px solid var(--accent);margin:1.5rem 0;overflow-x:auto;white-space:pre}
+
+/* Blockquotes */
+blockquote{border-left:4px solid var(--accent);padding:.75rem 1.25rem;margin:1rem 0;background:var(--bg);color:var(--text2);font-style:italic}
+
+/* Mermaid Fallback (rendered as code block on detail pages) */
+.mermaid-fallback{font-family:var(--mono);font-size:.85rem;line-height:1.6;background:var(--code-bg);padding:1.5rem;border-radius:8px;border-left:4px solid #7c3aed;margin:1.5rem 0;overflow-x:auto;white-space:pre}
+.mermaid-label{display:inline-block;background:#7c3aed;color:#fff;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:3px;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px}
+
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="header">
+    <div class="header-content">
+      <h1>🚀 Migration</h1>
+      <div class="subtitle">Wild Rydes — Full Detail View (3 files)</div>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html">📋 Main Report</a>
+    <a href="details-overview.html">📋 Overview</a>
+    <a href="details-analysis.html">📊 Analysis</a>
+    <a href="details-architecture.html">🏗️ Architecture</a>
+    <a href="details-behavior.html">⚙️ Behavior</a>
+    <a href="details-diagrams.html">📈 Diagrams</a>
+    <a href="details-migration.html" class="current">🚀 Migration</a>
+    <a href="details-reference.html">📚 Reference</a>
+    <a href="details-specialized.html">🔧 Specialized</a>
+    <a href="details-technical-debt.html">⚠️ Technical Debt</a>
+  </div>
+
+  <div class="container" id="main-content">
+    <a href="index.html" class="back-link">← Back to Main Report</a>
+
+    <div class="card">
+      <h2>🚀 Migration — Complete Content</h2>
+      <p>This page contains the full content of all 3 input file(s) for this area. Each file is in a collapsible section below.</p>
+    </div>
+
+    <div class="collapsible">
+  <div class="collapsible-header">📄 migration/component-order.md</div>
+  <div class="collapsible-content">
+    <h1>Component Migration Order</h1>
+
+<h2>Recommended Migration Sequence</h2>
+
+<p>When migrating this application from .NET Framework 4.8.1 to .NET 8+ (ASP.NET Core), the following order respects dependency relationships and minimizes risk.</p>
+
+<h3>Phase 1: Foundation (No Dependencies)</h3>
+
+<ol>
+  <li><strong>Models</strong> (<code>Models/UserModel.cs</code>, <code>Models/UnicornModel.cs</code>, <code>Models/RideModel.cs</code>)</li>
+</ol>
+<ul>
+  <li>Remove <code>System.ComponentModel.DataAnnotations.Schema</code> if using EF Core Fluent API</li>
+  <li>Data annotations are largely compatible</li>
+  <li><code>Location</code> complex type → EF Core owned entity</li>
+</ul>
+
+<ol>
+  <li><strong>DbContext</strong> (<code>Context/DefaultContext.cs</code>)</li>
+</ol>
+<ul>
+  <li>Change base from <code>DbContext</code> (EF6) to <code>DbContext</code> (EF Core)</li>
+  <li>Replace <code>OnModelCreating</code> convention removal with Fluent API</li>
+  <li>Update connection string configuration</li>
+</ul>
+
+<h3>Phase 2: Infrastructure</h3>
+
+<ol>
+  <li><strong>Configuration</strong> (Web.config → appsettings.json)</li>
+</ol>
+<ul>
+  <li>Move <code>appSettings</code> to <code>appsettings.json</code></li>
+  <li>Move connection strings to <code>appsettings.json</code></li>
+  <li>Remove XML configuration entirely</li>
+</ul>
+
+<ol>
+  <li><strong>Startup</strong> (Global.asax.cs → Program.cs)</li>
+</ol>
+<ul>
+  <li>Replace <code>Application_Start</code> with <code>WebApplicationBuilder</code> setup</li>
+  <li>Register services (DI): DbContext, AWS clients</li>
+  <li>Configure middleware pipeline (auth, routing, static files)</li>
+</ul>
+
+<h3>Phase 3: Cross-Cutting Concerns</h3>
+
+<ol>
+  <li><strong>Authentication</strong> (<code>Decorators/Protected.cs</code> → ASP.NET Core auth middleware)</li>
+</ol>
+<ul>
+  <li>Replace custom filter with <code>[Authorize]</code> attribute</li>
+  <li>Implement proper auth handler (Cookie or JWT)</li>
+  <li>Configure authentication services in DI</li>
+</ul>
+
+<ol>
+  <li><strong>Routing</strong> (<code>App_Start/RouteConfig.cs</code> → attribute routing or endpoint routing)</li>
+</ol>
+<ul>
+  <li>Migrate to ASP.NET Core endpoint routing</li>
+  <li>Update MapTile route constraint syntax</li>
+</ul>
+
+<h3>Phase 4: Controllers (Order by Complexity)</h3>
+
+<ol>
+  <li><strong>HomeController</strong> - Trivial migration (single action)</li>
+  <li><strong>UnicornController</strong> - Standard CRUD, replace <code>DbContext</code> usage patterns</li>
+  <li><strong>UserController</strong> - Replace session auth with proper Identity/auth system</li>
+  <li><strong>RideController</strong> - Most complex: AWS client DI, async patterns, file results</li>
+</ol>
+
+<h3>Phase 5: Views</h3>
+
+<ol>
+  <li><strong>Layout and shared views</strong> (<code>_Layout.cshtml</code>, <code>Error.cshtml</code>)</li>
+</ol>
+<ul>
+  <li>Update tag helpers, remove <code>@Styles.Render</code>/<code>@Scripts.Render</code></li>
+</ul>
+<ol>
+  <li><strong>Feature views</strong> (all remaining .cshtml files)</li>
+</ol>
+<ul>
+  <li>Update <code>@Html.*</code> helpers to tag helpers where appropriate</li>
+  <li>Update form handling</li>
+</ul>
+
+<h3>Phase 6: Infrastructure</h3>
+
+<ol>
+  <li><strong>Dockerfile</strong> - Switch from Windows Server Core to Linux-based .NET 8 image</li>
+  <li><strong>Database</strong> - Recreate EF Core migrations, configure production DB</li>
+</ol>
+
+<h2>Dependency Constraints</h2>
+
+<pre><code>Models (no deps) ← DbContext ← Controllers ← Views
+                                     ↑
+Configuration ─────────────────────────┘
+Authentication ────────────────────────┘</code></pre>
+
+<h2>Cross-References</h2>
+
+<ul>
+  <li><a href="../technical-debt/remediation-plan.md">Remediation Plan</a></li>
+  <li><a href="test-specifications.md">Test Specifications</a></li>
+  <li><a href="validation-criteria.md">Validation Criteria</a></li>
+</ul>
+
+  </div>
+</div>
+<div class="collapsible">
+  <div class="collapsible-header">📄 migration/test-specifications.md</div>
+  <div class="collapsible-content">
+    <h1>Test Specifications</h1>
+
+<h2>Overview</h2>
+
+<p>The current application has zero test coverage. The following test specifications define the cases needed to validate functionality during and after migration.</p>
+
+<h2>Unit Tests</h2>
+
+<h3>UserController Tests</h3>
+
+<table><thead><tr><th>Test Case</th><th>Input</th><th>Expected Output</th></tr></thead><tbody><tr><td>Login<em>ValidCredentials</em>SetsSession</td><td>email=&quot;user@unicornrides.aws&quot;, password=&quot;Passw0rd&quot;</td><td>Session[&quot;user&quot;] = email, redirect</td></tr><tr><td>Login<em>InvalidPassword</em>ShowsError</td><td>email=&quot;user@unicornrides.aws&quot;, password=&quot;wrong&quot;</td><td>ViewBag.Error set, returns view</td></tr><tr><td>Login<em>NonexistentUser</em>ShowsError</td><td>email=&quot;notfound@test.com&quot;, password=&quot;any&quot;</td><td>ViewBag.Error set, returns view</td></tr><tr><td>Login<em>EmptyFields</em>ShowsError</td><td>email=&quot;&quot;, password=&quot;&quot;</td><td>ViewBag.Error set, returns view</td></tr><tr><td>Create<em>ValidUser</em>SavesHashedPassword</td><td>email=&quot;new@test.com&quot;, password=&quot;Test123&quot;</td><td>User saved with SHA-256 hash</td></tr><tr><td>Create<em>InvalidModel</em>ReturnsView</td><td>email=&quot;&quot; (required field missing)</td><td>Returns view with model errors</td></tr><tr><td>Logout_AbandonSession</td><td>(authenticated session)</td><td>Session abandoned, redirect to Home</td></tr><tr><td>GetHash_ReturnsConsistentHash</td><td>&quot;Passw0rd&quot;</td><td>&quot;b03ddf3ca2e714a6548e7495e2a03f5e824eaac9837cd7f159c67b90fb4b7342&quot;</td></tr></tbody></table>
+
+<h3>RideController Tests</h3>
+
+<table><thead><tr><th>Test Case</th><th>Input</th><th>Expected Output</th></tr></thead><tbody><tr><td>CreateRide<em>Authenticated</em>CreatesRide</td><td>valid params + session</td><td>JSON {success: true, rideId: guid}</td></tr><tr><td>CreateRide<em>NoSession</em>ReturnsError</td><td>valid params, no session</td><td>JSON {success: false, error: &quot;User not logged in&quot;}</td></tr><tr><td>CreateRide<em>UserNotFound</em>ReturnsError</td><td>session with unknown email</td><td>JSON {success: false, error: &quot;User not found&quot;}</td></tr><tr><td>Map<em>Authenticated</em>ReturnsView</td><td>authenticated session</td><td>View result</td></tr><tr><td>Map<em>Unauthenticated</em>Redirects</td><td>no session</td><td>Redirect to /User/Login</td></tr><tr><td>Index<em>Authenticated</em>ReturnsUserRides</td><td>authenticated, has rides</td><td>View with ride list</td></tr><tr><td>ReverseGeocode<em>Success</em>ReturnsAddress</td><td>lat=40.7, lng=-74.0</td><td>JSON {success: true, address: &quot;...&quot;}</td></tr><tr><td>ReverseGeocode<em>NoResults</em>ReturnsFallback</td><td>lat=0, lng=0</td><td>JSON {success: false, address: &quot;0.0000, 0.0000&quot;}</td></tr><tr><td>GetMapTile<em>ValidCoords</em>ReturnsPng</td><td>z=10, x=300, y=400</td><td>image/png content</td></tr><tr><td>GetMapTile<em>AccessDenied</em>Returns403</td><td>(AWS access denied)</td><td>HTTP 403</td></tr></tbody></table>
+
+<h3>UnicornController Tests</h3>
+
+<table><thead><tr><th>Test Case</th><th>Input</th><th>Expected Output</th></tr></thead><tbody><tr><td>Index<em>Authenticated</em>ReturnsAllUnicorns</td><td>authenticated session</td><td>View with unicorn list</td></tr><tr><td>Index<em>Unauthenticated</em>Redirects</td><td>no session</td><td>Redirect to /User/Login</td></tr><tr><td>Create<em>ValidModel</em>SavesUnicorn</td><td>Name=&quot;Test&quot;, Color=&quot;Blue&quot;, Description=&quot;Desc&quot;</td><td>Unicorn saved, redirect to Index</td></tr><tr><td>Create<em>InvalidModel</em>ReturnsView</td><td>Name=&quot;&quot; (required missing)</td><td>Returns view with errors</td></tr><tr><td>Delete<em>ValidId</em>ShowsConfirmation</td><td>id=existing-guid</td><td>View with unicorn details</td></tr><tr><td>Delete<em>NullId</em>Returns400</td><td>id=null</td><td>HTTP 400</td></tr><tr><td>Delete<em>NotFound</em>Returns404</td><td>id=non-existing-guid</td><td>HTTP 404</td></tr><tr><td>DeleteConfirmed_RemovesUnicorn</td><td>id=existing-guid</td><td>Unicorn removed, redirect</td></tr></tbody></table>
+
+<h3>Protected Filter Tests</h3>
+
+<table><thead><tr><th>Test Case</th><th>Input</th><th>Expected Output</th></tr></thead><tbody><tr><td>OnActionExecuting<em>NoSession</em>Redirects</td><td>Session[&quot;user&quot;] = null</td><td>Redirect to /User/Login?or={url}</td></tr><tr><td>OnActionExecuting<em>WithSession</em>Allows</td><td>Session[&quot;user&quot;] = &quot;test@test.com&quot;</td><td>No redirect, action proceeds</td></tr></tbody></table>
+
+<h2>Integration Tests</h2>
+
+<table><thead><tr><th>Test Case</th><th>Description</th></tr></thead><tbody><tr><td>FullRegistrationFlow</td><td>Register → Login → Access protected page</td></tr><tr><td>RideRequestFlow</td><td>Login → Map → CreateRide → View in Index</td></tr><tr><td>UnicornCRUD</td><td>Login → Create unicorn → Verify in list → Delete</td></tr><tr><td>DatabaseSeed</td><td>Run migrations → Verify 3 unicorns and 1 user exist</td></tr></tbody></table>
+
+<h2>Cross-References</h2>
+
+<ul>
+  <li><a href="validation-criteria.md">Validation Criteria</a></li>
+  <li><a href="component-order.md">Component Order</a></li>
+  <li><a href="../behavior/business-logic.md">Business Logic</a></li>
+</ul>
+
+  </div>
+</div>
+<div class="collapsible">
+  <div class="collapsible-header">📄 migration/validation-criteria.md</div>
+  <div class="collapsible-content">
+    <h1>Validation Criteria</h1>
+
+<h2>Functional Validation</h2>
+
+<h3>Authentication System</h3>
+<ul>
+  <li>[ ] User registration creates account with hashed password</li>
+  <li>[ ] Login with valid credentials sets authentication state</li>
+  <li>[ ] Login with invalid credentials shows error message</li>
+  <li>[ ] Protected routes redirect unauthenticated users to login</li>
+  <li>[ ] Logout destroys session and redirects to home</li>
+  <li>[ ] Return URL preserved through login flow</li>
+</ul>
+
+<h3>Ride Management</h3>
+<ul>
+  <li>[ ] Authenticated users can access map view</li>
+  <li>[ ] CreateRide endpoint creates ride with random unicorn assignment</li>
+  <li>[ ] Ride history shows rides for current user only</li>
+  <li>[ ] ReverseGeocode returns address for valid coordinates</li>
+  <li>[ ] Map tiles load correctly from AWS Location Service</li>
+</ul>
+
+<h3>Unicorn Management</h3>
+<ul>
+  <li>[ ] Authenticated users can list all unicorns</li>
+  <li>[ ] New unicorns can be created with required fields</li>
+  <li>[ ] Unicorns can be deleted with confirmation</li>
+  <li>[ ] Unauthenticated access redirects to login</li>
+</ul>
+
+<h3>Data Integrity</h3>
+<ul>
+  <li>[ ] Users table stores email and hashed password</li>
+  <li>[ ] Unicorns table stores name, color, description, rating</li>
+  <li>[ ] Rides table stores all location data and FK relationships</li>
+  <li>[ ] Cascade delete removes rides when user/unicorn deleted</li>
+  <li>[ ] Seed data creates 3 unicorns and 1 user</li>
+</ul>
+
+<h2>Non-Functional Validation</h2>
+
+<h3>Performance</h3>
+<ul>
+  <li>[ ] Map tile requests complete with acceptable latency</li>
+  <li>[ ] Database queries use appropriate includes/eager loading</li>
+  <li>[ ] No N+1 query patterns in ride history</li>
+</ul>
+
+<h3>Security</h3>
+<ul>
+  <li>[ ] Passwords are not stored in plaintext</li>
+  <li>[ ] Session state is properly managed</li>
+  <li>[ ] CSRF tokens validated on form submissions</li>
+  <li>[ ] Database queries are parameterized (no SQL injection)</li>
+</ul>
+
+<h3>Deployment</h3>
+<ul>
+  <li>[ ] Application builds without errors</li>
+  <li>[ ] Docker image builds successfully</li>
+  <li>[ ] Database migrations apply cleanly</li>
+  <li>[ ] AWS configuration is externalized (not hardcoded)</li>
+</ul>
+
+<h2>Migration-Specific Validation</h2>
+
+<h3>.NET 8 Migration Criteria</h3>
+<ul>
+  <li>[ ] Application compiles on .NET 8</li>
+  <li>[ ] All controllers return correct responses</li>
+  <li>[ ] Entity Framework Core migrations equivalent to EF6 schema</li>
+  <li>[ ] Session/authentication works with new middleware</li>
+  <li>[ ] AWS SDK calls function correctly</li>
+  <li>[ ] Views render correctly with updated tag helpers</li>
+  <li>[ ] Bundling/static file serving works</li>
+  <li>[ ] Docker image builds on Linux base</li>
+</ul>
+
+<h3>Regression Checks</h3>
+<ul>
+  <li>[ ] All existing URLs return same status codes</li>
+  <li>[ ] JSON API responses maintain same structure</li>
+  <li>[ ] Form submissions process identically</li>
+  <li>[ ] Database schema produces equivalent data</li>
+</ul>
+
+<h2>Cross-References</h2>
+
+<ul>
+  <li><a href="test-specifications.md">Test Specifications</a></li>
+  <li><a href="component-order.md">Component Order</a></li>
+  <li><a href="../behavior/business-logic.md">Business Logic</a></li>
+</ul>
+
+  </div>
+</div>
+  </div>
+
+  <div class="footer">
+    <p>Generated on 2026-06-26 08:02 | Wild Rydes — Migration Detail Page</p>
+  </div>
+
+  <script>
+  (function() {
+    document.querySelectorAll('.collapsible-header').forEach(function(h) {
+      function toggle() {
+        h.classList.toggle('expanded');
+        h.nextElementSibling.classList.toggle('show');
+      }
+      h.addEventListener('click', toggle);
+      h.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

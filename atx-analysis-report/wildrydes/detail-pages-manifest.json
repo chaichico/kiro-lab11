@@ -1,0 +1,125 @@
+{
+  "project": "Wild Rydes",
+  "generated_at": "2026-06-26T08:02:26.293613",
+  "input_dir": "/home/cloudshell-user/wildrydes/ATXDocumentation",
+  "total_input_files": 34,
+  "areas": {
+    "overview": {
+      "title": "Overview",
+      "emoji": "\ud83d\udccb",
+      "file_count": 3,
+      "detail_page": "details-overview.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/README.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/project-overview.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/technical-debt-report.md"
+      ]
+    },
+    "analysis": {
+      "title": "Analysis",
+      "emoji": "\ud83d\udcca",
+      "file_count": 5,
+      "detail_page": "details-analysis.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/analysis/code-metrics.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/analysis/complexity-analysis.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/analysis/dependency-analysis.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/analysis/security-patterns.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/analysis/tech-debt.md"
+      ]
+    },
+    "architecture": {
+      "title": "Architecture",
+      "emoji": "\ud83c\udfd7\ufe0f",
+      "file_count": 4,
+      "detail_page": "details-architecture.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/architecture/components.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/architecture/dependencies.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/architecture/patterns.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/architecture/system-overview.md"
+      ]
+    },
+    "behavior": {
+      "title": "Behavior",
+      "emoji": "\u2699\ufe0f",
+      "file_count": 4,
+      "detail_page": "details-behavior.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/behavior/business-logic.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/behavior/decision-logic.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/behavior/error-handling.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/behavior/workflows.md"
+      ]
+    },
+    "diagrams": {
+      "title": "Diagrams",
+      "emoji": "\ud83d\udcc8",
+      "file_count": 3,
+      "detail_page": "details-diagrams.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/diagrams/architecture/system-context.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/diagrams/behavioral/sequence-diagrams.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/diagrams/structural/component-diagrams.md"
+      ]
+    },
+    "migration": {
+      "title": "Migration",
+      "emoji": "\ud83d\ude80",
+      "file_count": 3,
+      "detail_page": "details-migration.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/migration/component-order.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/migration/test-specifications.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/migration/validation-criteria.md"
+      ]
+    },
+    "reference": {
+      "title": "Reference",
+      "emoji": "\ud83d\udcda",
+      "file_count": 5,
+      "detail_page": "details-reference.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/reference/api-reference.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/reference/data-models.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/reference/interfaces.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/reference/modules.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/reference/program-structure.md"
+      ]
+    },
+    "specialized": {
+      "title": "Specialized",
+      "emoji": "\ud83d\udd27",
+      "file_count": 3,
+      "detail_page": "details-specialized.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/specialized/aws-integration.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/specialized/database-patterns.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/specialized/infrastructure.md"
+      ]
+    },
+    "technical-debt": {
+      "title": "Technical Debt",
+      "emoji": "\u26a0\ufe0f",
+      "file_count": 4,
+      "detail_page": "details-technical-debt.html",
+      "files": [
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/technical-debt/maintenance-burden.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/technical-debt/outdated-components.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/technical-debt/remediation-plan.md",
+        "/home/cloudshell-user/wildrydes/ATXDocumentation/technical-debt/summary.md"
+      ]
+    }
+  },
+  "detail_pages": [
+    "details-overview.html",
+    "details-analysis.html",
+    "details-architecture.html",
+    "details-behavior.html",
+    "details-diagrams.html",
+    "details-migration.html",
+    "details-reference.html",
+    "details-specialized.html",
+    "details-technical-debt.html"
+  ]
+}

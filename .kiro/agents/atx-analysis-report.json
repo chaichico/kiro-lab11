@@ -1,0 +1,29 @@
+{
+  "name": "atx-analysis-report",
+  "description": "AWS Transform analysis agent. Generates self-contained HTML5 assessment reports from existing ATXDocumentation output. Supports both non-interactive (autonomous) and interactive (user-guided) modes.",
+  "prompt": "file://./atx-analysis-report-prompt.md",
+  "mcpServers": {
+    "aws-knowledge-mcp-server": {
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http",
+      "disabled": false,
+      "autoApprove": ["*"]
+    }
+  },
+  "tools": [
+    "read",
+    "write",
+    "shell",
+    "@aws-knowledge-mcp-server"
+  ],
+  "allowedTools": [
+    "read",
+    "write",
+    "shell",
+    "@aws-knowledge-mcp-server"
+  ],
+  "resources": [
+    "skill://.kiro/skills/analysis-report/SKILL.md"
+  ],
+  "model": "claude-opus-4.6"
+}
