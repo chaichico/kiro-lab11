@@ -1,12 +1,16 @@
-﻿using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace wildrydes.net.Controllers
+namespace wildrydes.net.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    public IActionResult Index()
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
+        return View();
+    }
+
+    public IActionResult Error()
+    {
+        return View();
     }
 }

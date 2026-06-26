@@ -61,24 +61,20 @@
     var destCoords = null;
     var unicornInterval = null;
 
-    // Use AWS Location Service tiles
     L.tileLayer('/Ride/GetMapTile/{z}/{x}/{y}', {
         attribution: '© Amazon Web Services',
         maxZoom: 18
     }).addTo(map);
 
-    // Initialize map features immediately
     initializeMapFeatures();
 
     function initializeMapFeatures() {
-        // Get user's current location
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
                 var lng = position.coords.longitude;
                 map.setView([lat, lng], 12);
-                
-                // Set pickup location to user's current location
+
                 $.ajax({
                     url: '/Ride/ReverseGeocode',
                     type: 'POST',
@@ -87,8 +83,6 @@
                         var address = response.success ? response.address : lat.toFixed(4) + ', ' + lng.toFixed(4);
                         document.getElementById('pickupAddress').value = address;
                         pickupCoords = { lat: lat, lng: lng };
-                        
-                        // Add pickup marker
                         pickupMarker = L.marker([lat, lng])
                             .addTo(map)
                             .bindPopup('Pickup: ' + address);
@@ -97,8 +91,6 @@
                         var coords = lat.toFixed(4) + ', ' + lng.toFixed(4);
                         document.getElementById('pickupAddress').value = coords;
                         pickupCoords = { lat: lat, lng: lng };
-                        
-                        // Add pickup marker with coordinates
                         pickupMarker = L.marker([lat, lng])
                             .addTo(map)
                             .bindPopup('Pickup: ' + coords);
@@ -111,26 +103,18 @@
         } else {
             document.getElementById('pickupAddress').placeholder = 'Geolocation not supported';
         }
-        
-        // Add click handler for destination selection
+
         map.on('click', function(e) {
             var lat = e.latlng.lat;
             var lng = e.latlng.lng;
-            
-            // Only set destination on map click (pickup is locked to user location)
+
             $.ajax({
                 url: '/Ride/ReverseGeocode',
                 type: 'POST',
                 data: { lat: lat, lng: lng },
                 success: function(response) {
                     var address = response.success ? response.address : lat.toFixed(4) + ', ' + lng.toFixed(4);
-                    
-                    // Remove existing destination marker if any
-                    if (destinationMarker) {
-                        map.removeLayer(destinationMarker);
-                    }
-                    
-                    // Add new destination marker
+                    if (destinationMarker) { map.removeLayer(destinationMarker); }
                     destinationMarker = L.marker([lat, lng])
                         .addTo(map)
                         .bindPopup('Destination: ' + address)
@@ -140,13 +124,7 @@
                 },
                 error: function() {
                     var coords = lat.toFixed(4) + ', ' + lng.toFixed(4);
-                    
-                    // Remove existing destination marker if any
-                    if (destinationMarker) {
-                        map.removeLayer(destinationMarker);
-                    }
-                    
-                    // Add new destination marker with coordinates
+                    if (destinationMarker) { map.removeLayer(destinationMarker); }
                     destinationMarker = L.marker([lat, lng])
                         .addTo(map)
                         .bindPopup('Destination: ' + coords)
@@ -162,12 +140,12 @@
         var pickup = document.getElementById('pickupAddress').value;
         var destination = document.getElementById('destinationAddress').value;
         var passengers = document.getElementById('passengers').value;
-        
+
         if (!pickup || !destination || !pickupCoords || !destCoords) {
             alert('Please ensure both pickup and destination locations are set');
             return;
         }
-        
+
         $.ajax({
             url: '/Ride/CreateRide',
             type: 'POST',
@@ -182,22 +160,15 @@
             },
             success: function(response) {
                 if (response.success) {
-                    // Hide the form and show confirmation
                     document.getElementById('rideForm').style.display = 'none';
                     document.getElementById('rideConfirmation').style.display = 'block';
-                    
-                    // Populate confirmation details
                     document.getElementById('confirmedRideId').textContent = response.rideId;
                     document.getElementById('confirmedUnicorn').textContent = response.unicornName;
                     document.getElementById('confirmedUnicornColor').textContent = response.unicornColor;
                     document.getElementById('confirmedUnicornDesc').textContent = response.unicornDesc;
-                    
-                    // Calculate estimated pickup time (15 seconds from now)
                     var pickupTime = new Date();
                     pickupTime.setSeconds(pickupTime.getSeconds() + 15);
                     document.getElementById('confirmedPickupTime').textContent = pickupTime.toLocaleTimeString();
-                    
-                    // Place unicorn on map and start tracking
                     placeUnicornAndStartTracking(response.unicornName);
                 } else {
                     alert('Error requesting ride: ' + response.error);
@@ -209,93 +180,55 @@
         });
     }
 
-
-
     function requestNewRide() {
-        // Stop unicorn tracking
-        if (unicornInterval) {
-            clearInterval(unicornInterval);
-            unicornInterval = null;
-        }
-        
-        // Remove unicorn marker
-        if (unicornMarker) {
-            map.removeLayer(unicornMarker);
-            unicornMarker = null;
-        }
-        
-        // Show the form and hide confirmation
+        if (unicornInterval) { clearInterval(unicornInterval); unicornInterval = null; }
+        if (unicornMarker) { map.removeLayer(unicornMarker); unicornMarker = null; }
         document.getElementById('rideForm').style.display = 'block';
         document.getElementById('rideConfirmation').style.display = 'none';
-        
-        // Clear destination
         document.getElementById('destinationAddress').value = '';
         destCoords = null;
-        
-        // Remove destination marker
-        if (destinationMarker) {
-            map.removeLayer(destinationMarker);
-            destinationMarker = null;
-        }
-        
-        // Reset passengers to 1
+        if (destinationMarker) { map.removeLayer(destinationMarker); destinationMarker = null; }
         document.getElementById('passengers').value = '1';
     }
 
     function cancelRide() {
-        var rideId = document.getElementById('confirmedRideId').textContent;
-        
         if (confirm('Are you sure you want to cancel this ride?')) {
-            // Stop unicorn tracking
-            if (unicornInterval) {
-                clearInterval(unicornInterval);
-                unicornInterval = null;
-            }
-            // Call backend to cancel the ride (you can implement this endpoint later)
-            // For now, just reset the form
+            if (unicornInterval) { clearInterval(unicornInterval); unicornInterval = null; }
             requestNewRide();
         }
     }
 
     function placeUnicornAndStartTracking(unicornName) {
         if (!pickupCoords) return;
-        
-        // Generate random position approximately 15 minutes away (roughly 5-10km)
-        var distance = 0.05 + Math.random() * 0.05; // 5-10km in degrees
+        var distance = 0.05 + Math.random() * 0.05;
         var angle = Math.random() * 2 * Math.PI;
-        
         var unicornLat = pickupCoords.lat + distance * Math.cos(angle);
         var unicornLng = pickupCoords.lng + distance * Math.sin(angle);
-        
-        // Place unicorn marker with custom icon
+
         var unicornIcon = L.icon({
-            iconUrl: '/Content/Images/unicorn-icon.png',
+            iconUrl: '/images/unicorn-icon.png',
             iconSize: [40, 40],
             iconAnchor: [20, 20],
             popupAnchor: [0, -20]
         });
-        
-        unicornMarker = L.marker([unicornLat, unicornLng], {
-            icon: unicornIcon
-        }).addTo(map).bindPopup(unicornName + ' is on the way!');
-        
-        // Start moving unicorn toward pickup location
-        var steps = 30; // 30 steps over 15 seconds (0.5 seconds per step)
+
+        unicornMarker = L.marker([unicornLat, unicornLng], { icon: unicornIcon })
+            .addTo(map).bindPopup(unicornName + ' is on the way!');
+
+        var steps = 30;
         var currentStep = 0;
         var latStep = (pickupCoords.lat - unicornLat) / steps;
         var lngStep = (pickupCoords.lng - unicornLng) / steps;
-        
+
         unicornInterval = setInterval(function() {
             currentStep++;
             var newLat = unicornLat + (latStep * currentStep);
             var newLng = unicornLng + (lngStep * currentStep);
-            
             unicornMarker.setLatLng([newLat, newLng]);
-            
             if (currentStep >= steps) {
                 clearInterval(unicornInterval);
                 unicornMarker.bindPopup(unicornName + ' has arrived!').openPopup();
             }
-        }, 500); // Update every 0.5 seconds
+        }, 500);
     }
 </script>

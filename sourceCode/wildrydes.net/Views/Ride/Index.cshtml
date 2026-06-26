@@ -1,4 +1,4 @@
-﻿@model IEnumerable<wildrydes.net.Models.RideModel>
+@model IEnumerable<wildrydes.net.Models.RideModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,13 +12,13 @@
                 @Html.DisplayNameFor(model => model.DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Unicorn.Name)
+                Unicorn
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PickupLocation.Address)
+                Pickup Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DestinationLocation.Address)
+                Destination Address
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfPassengers)
@@ -38,10 +38,10 @@
                     @Html.DisplayFor(modelItem => item.Unicorn.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PickupLocation.Address)
+                    @item.PickupLocation?.Address
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DestinationLocation.Address)
+                    @item.DestinationLocation?.Address
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NumberOfPassengers)

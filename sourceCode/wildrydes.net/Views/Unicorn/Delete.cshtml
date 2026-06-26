@@ -1,4 +1,4 @@
-﻿@model wildrydes.net.Models.UnicornModel
+@model wildrydes.net.Models.UnicornModel
 
 @{
     ViewBag.Title = "Delete";
@@ -37,12 +37,12 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    <form asp-action="Delete" method="post">
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <a asp-action="Index">Back to List</a>
         </div>
-    }
+    </form>
 </div>

@@ -1,85 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+using System;
 using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using wildrydes.net.Context;
 using wildrydes.net.Models;
-using wildrydes.net.Decorators;
 
-namespace wildrydes.net.Controllers
+namespace wildrydes.net.Controllers;
+
+[Authorize]
+public class UnicornController : Controller
 {
-    [Protected]
-    public class UnicornController : Controller
+    private readonly DefaultContext _db;
+
+    public UnicornController(DefaultContext db)
     {
-        private DefaultContext db = new DefaultContext();
+        _db = db;
+    }
 
-        // GET: Unicorn
-        public ActionResult Index()
+    public async Task<IActionResult> Index()
+    {
+        return View(await _db.Unicorns.ToListAsync());
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Name,Description,Rating")] UnicornModel unicornModel)
+    {
+        if (ModelState.IsValid)
         {
-            return View(db.Unicorns.ToList());
-        }
-
-        // GET: Unicorn/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Unicorn/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,Rating")] UnicornModel unicornModel)
-        {
-            if (ModelState.IsValid)
-            {
-                unicornModel.Id = Guid.NewGuid();
-                db.Unicorns.Add(unicornModel);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(unicornModel);
-        }
-
-        // GET: Unicorn/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UnicornModel unicornModel = db.Unicorns.Find(id);
-            if (unicornModel == null)
-            {
-                return HttpNotFound();
-            }
-            return View(unicornModel);
-        }
-
-        // POST: Unicorn/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            UnicornModel unicornModel = db.Unicorns.Find(id);
-            db.Unicorns.Remove(unicornModel);
-            db.SaveChanges();
+            unicornModel.Id = Guid.NewGuid();
+            _db.Unicorns.Add(unicornModel);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        return View(unicornModel);
+    }
+
+    public async Task<IActionResult> Delete(Guid? id)
+    {
+        if (id == null)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return BadRequest();
         }
+
+        var unicornModel = await _db.Unicorns.FindAsync(id);
+        if (unicornModel == null)
+        {
+            return NotFound();
+        }
+
+        return View(unicornModel);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        var unicornModel = await _db.Unicorns.FindAsync(id);
+        if (unicornModel != null)
+        {
+            _db.Unicorns.Remove(unicornModel);
+            await _db.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Index");
     }
 }

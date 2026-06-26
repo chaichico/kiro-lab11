@@ -1,115 +1,105 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
-using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using wildrydes.net.Context;
 using wildrydes.net.Models;
 
-namespace wildrydes.net.Controllers
-{
-    public class UserController : Controller
-    {
-        private DefaultContext db = new DefaultContext();
+namespace wildrydes.net.Controllers;
 
-        // GET: User/Logout
-        public ActionResult Logout()
+public class UserController : Controller
+{
+    private readonly DefaultContext _db;
+
+    public UserController(DefaultContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(UserModel userModel)
+    {
+        if (!string.IsNullOrEmpty(userModel.Email) && !string.IsNullOrEmpty(userModel.Password))
         {
-            Session.Abandon();
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userModel.Email);
+            if (user != null)
+            {
+                if (GetHash(userModel.Password) == user.Password)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Role, "user")
+                    };
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    var returnUrl = Request.Query["or"].FirstOrDefault();
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+        ViewBag.Error = "Invalid login attempt";
+        return View(userModel);
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([Bind("Id,Email,Password")] UserModel userModel)
+    {
+        if (ModelState.IsValid)
+        {
+            userModel.Id = Guid.NewGuid();
+            userModel.Password = GetHash(userModel.Password);
+            _db.Users.Add(userModel);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: User/Login
-        public ActionResult Login()
+        return View(userModel);
+    }
+
+    public static string GetHash(string input)
+    {
+        byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(input));
+        var builder = new StringBuilder();
+        for (int i = 0; i < bytes.Length; i++)
         {
-            return View();
+            builder.Append(bytes[i].ToString("x2"));
         }
-
-        // POST: User/Login
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(UserModel userModel)
-        {
-            if (!string.IsNullOrEmpty(userModel.Email) && !string.IsNullOrEmpty(userModel.Password))
-            {
-                // get user from database
-                UserModel user = db.Users.Where(u => u.Email == userModel.Email).FirstOrDefault();
-                if (user != null)
-                {
-                    // check password
-                    if (GetHash(userModel.Password) == user.Password)
-                    {
-                        // set session
-                        Session["user"] = user.Email;
-                        Session["role"] = "user";
-                        if (!string.IsNullOrEmpty(Request.QueryString["or"]))
-                        {
-                            return Redirect(Request.QueryString["or"]);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                    }
-                }
-            }
-            ViewBag.Error = "Invalid login attempt";
-            return View(userModel);
-        }
-
-
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: User/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Email,Password")] UserModel userModel)
-        {
-            if (ModelState.IsValid)
-            {
-                userModel.Id = Guid.NewGuid();
-                // update password to save hashed value
-                userModel.Password = GetHash(userModel.Password);
-                db.Users.Add(userModel);
-                db.SaveChanges();
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(userModel);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        public static string GetHash(string input)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
+        return builder.ToString();
     }
 }
