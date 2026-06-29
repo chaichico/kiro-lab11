@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("wildrydes.net")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f10600f7b29b4ec6952d5e5abca1a7d148c4e2c6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+252c2b36cb8a6a7cfebf8ef5bfe688dee9e108f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("wildrydes.net")]
 [assembly: System.Reflection.AssemblyTitleAttribute("wildrydes.net")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

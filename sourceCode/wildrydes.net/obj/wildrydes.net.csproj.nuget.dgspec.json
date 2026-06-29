@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/wildrydes.net.csproj": {}
+    "C:\\Users\\Itsc01\\Desktop\\New folder\\kiro-lab11\\sourceCode\\wildrydes.net\\wildrydes.net.csproj": {}
   },
   "projects": {
-    "/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/wildrydes.net.csproj": {
+    "C:\\Users\\Itsc01\\Desktop\\New folder\\kiro-lab11\\sourceCode\\wildrydes.net\\wildrydes.net.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/wildrydes.net.csproj",
+        "projectUniqueName": "C:\\Users\\Itsc01\\Desktop\\New folder\\kiro-lab11\\sourceCode\\wildrydes.net\\wildrydes.net.csproj",
         "projectName": "wildrydes.net",
-        "projectPath": "/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/wildrydes.net.csproj",
-        "packagesPath": "/tmp/nuget-packages",
-        "outputPath": "/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/obj/",
+        "projectPath": "C:\\Users\\Itsc01\\Desktop\\New folder\\kiro-lab11\\sourceCode\\wildrydes.net\\wildrydes.net.csproj",
+        "packagesPath": "C:\\Users\\Itsc01\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Itsc01\\Desktop\\New folder\\kiro-lab11\\sourceCode\\wildrydes.net\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/cloudshell-user/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Itsc01\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -62,6 +63,10 @@
             "AWSSDK.SecurityToken": {
               "target": "Package",
               "version": "[4.0.1.6, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.11, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -97,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/cloudshell-user/.dotnet/sdk/8.0.422/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

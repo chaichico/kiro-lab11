@@ -1,5 +1,7 @@
 is_global = true
 build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
@@ -9,63 +11,65 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = wildrydes.net
 build_property.RootNamespace = wildrydes.net
-build_property.ProjectDir = /home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/
+build_property.ProjectDir = C:\Users\Itsc01\Desktop\New folder\kiro-lab11\sourceCode\wildrydes.net\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /home/cloudshell-user/wildrydes/sourceCode/wildrydes.net
+build_property.MSBuildProjectDirectory = C:\Users\Itsc01\Desktop\New folder\kiro-lab11\sourceCode\wildrydes.net
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Ride/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmlkZS9JbmRleC5jc2h0bWw=
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Ride/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlkZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Ride/Map.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmlkZS9NYXAuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Ride/Map.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlkZVxNYXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Unicorn/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVW5pY29ybi9DcmVhdGUuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Unicorn/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pY29yblxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Unicorn/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVW5pY29ybi9EZWxldGUuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Unicorn/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pY29yblxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/Unicorn/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVW5pY29ybi9JbmRleC5jc2h0bWw=
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/Unicorn/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5pY29yblxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/User/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9DcmVhdGUuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/User/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9Mb2dpbi5jc2h0bWw=
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/User/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/User/Logout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlci9Mb2dvdXQuY3NodG1s
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/User/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/cloudshell-user/wildrydes/sourceCode/wildrydes.net/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/Itsc01/Desktop/New folder/kiro-lab11/sourceCode/wildrydes.net/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
