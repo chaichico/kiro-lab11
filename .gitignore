@@ -1,0 +1,28 @@
+# Ignore build outputs
+bin/
+obj/
+
+# VS and editor files
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS files
+.DS_Store
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+
+# Rider/IDE
+.idea/
+
+# Logs
+*.log
+
+# Publish
+publish/
